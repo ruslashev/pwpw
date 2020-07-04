@@ -4,7 +4,7 @@ cflags = -g -std=c++17 \
          -Wnull-dereference -Wdisabled-optimization -Wlogical-op -Wtrampolines -Wpointer-arith \
          -Wundef -Wmissing-format-attribute -Wmissing-format-attribute -Wredundant-decls -Wpadded \
          -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-padded
-lflags = -lglfw -lGLEW
+lflags = $(shell pkg-config --libs glfw3 glew)
 bin = pwpw
 builddir = .build
 
