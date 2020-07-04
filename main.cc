@@ -5,9 +5,10 @@ int main()
 {
 	wm w;
 	renderer r;
+	int winw = 1280, winh = (winw * 3) / 4;
 
-	w.init();
-	r.init();
+	w.init(winw, winh);
+	r.init(winw, winh);
 
 	bool done = false;
 

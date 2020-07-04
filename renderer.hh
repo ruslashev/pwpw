@@ -3,7 +3,7 @@
 class renderer
 {
 public:
-	void init();
+	void init(int w, int h);
 	void render();
 	~renderer();
 };

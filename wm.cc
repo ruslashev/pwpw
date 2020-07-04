@@ -10,7 +10,7 @@ static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor
 	glfwSetWindowPos(window, (mode->width - w) / 2, (mode->height - h) / 2);
 }
 
-void wm::init()
+void wm::init(int w, int h)
 {
 	glfwInit();
 
@@ -20,8 +20,6 @@ void wm::init()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-	int w = 1280, h = (w * 3) / 4;
 
 	_window = glfwCreateWindow(w, h, "pwpw", nullptr, nullptr);
 	die_if(_window == nullptr);

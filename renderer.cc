@@ -4,7 +4,7 @@
 #include "renderer.hh"
 #include <iostream>
 
-void renderer::init()
+void renderer::init(int w, int h)
 {
 	glewExperimental = GL_TRUE;
 	glewInit();

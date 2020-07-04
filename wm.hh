@@ -9,7 +9,7 @@ class wm
 	GLFWwindow *_window;
 
 public:
-	void init();
+	void init(int w, int h);
 	bool should_close();
 	void poll_events();
 	void swap_window();
