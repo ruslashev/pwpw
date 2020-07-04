@@ -13,7 +13,7 @@ void wm::init()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	_window = glfwCreateWindow(1280, 960, "pwpw", nullptr, nullptr);
-	// die_if(!_window);
+	die_if(_window == nullptr);
 
 	glfwMakeContextCurrent(_window);
 }
