@@ -4,6 +4,7 @@ cflags = -g -std=c++17 \
          -Wnull-dereference -Wdisabled-optimization -Wlogical-op -Wtrampolines -Wpointer-arith \
          -Wundef -Wmissing-format-attribute -Wmissing-format-attribute -Wredundant-decls -Wpadded \
          -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-padded
+lflags = -lglfw
 bin = pwpw
 builddir = .build
 
@@ -18,13 +19,13 @@ all: $(bin)
 
 $(bin): $(obj)
 	@echo "cxx $(@F)"
-	@$(cxx) $< -o $@
+	@$(cxx) $< -o $@ $(lflags)
 
 $(obj): | $(builddir)
 
 $(builddir)/obj/%.o: %.cc
 	@echo "cxx $(<F)"
-	@$(cxx) $(cflags) $< -o $@ -c $(depcflag)
+	@$(cxx) $< -o $@ -c $(depcflag) $(cflags)
 
 $(builddir):
 	@mkdir -p $(builddir)/obj
