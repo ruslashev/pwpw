@@ -1,10 +1,13 @@
 #include "wm.hh"
+#include "renderer.hh"
 
 int main()
 {
 	wm w;
+	renderer r;
 
 	w.init();
+	r.init();
 
 	bool done = false;
 

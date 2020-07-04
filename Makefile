@@ -1,10 +1,10 @@
-src = main.cc wm.cc
+src = main.cc wm.cc renderer.cc
 cflags = -g -std=c++17 \
          -Wall -Wextra -Wduplicated-cond -Wformat=2 -Wduplicated-branches -Wdouble-promotion -Wvla \
          -Wnull-dereference -Wdisabled-optimization -Wlogical-op -Wtrampolines -Wpointer-arith \
          -Wundef -Wmissing-format-attribute -Wmissing-format-attribute -Wredundant-decls -Wpadded \
          -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-padded
-lflags = -lglfw
+lflags = -lglfw -lGLEW
 bin = pwpw
 builddir = .build
 
