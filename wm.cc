@@ -1,6 +1,15 @@
 #include "wm.hh"
 #include "util.hh"
 
+static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor)
+{
+	const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+	if (!mode)
+		return;
+
+	glfwSetWindowPos(window, (mode->width - w) / 2, (mode->height - h) / 2);
+}
+
 void wm::init()
 {
 	glfwInit();
@@ -12,8 +21,12 @@ void wm::init()
 
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	_window = glfwCreateWindow(1280, 960, "pwpw", nullptr, nullptr);
+	int w = 1280, h = (w * 3) / 4;
+
+	_window = glfwCreateWindow(w, h, "pwpw", nullptr, nullptr);
 	die_if(_window == nullptr);
+
+	center_window(_window, w, h, glfwGetPrimaryMonitor());
 
 	glfwMakeContextCurrent(_window);
 }
