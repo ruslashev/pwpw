@@ -1,9 +1,21 @@
-#include <GLFW/glfw3.h>
-#include <thread>
+#include "wm.h"
 
 int main()
 {
-    glfwInit();
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    glfwTerminate();
+	wm w;
+
+	w.init();
+
+	bool done = false;
+
+	while (!done) {
+		w.poll_events();
+
+		if (w.key_down(KEY_ESC))
+			done = true;
+
+		done |= w.should_close();
+
+		w.swap_window();
+	}
 }

@@ -1,4 +1,4 @@
-src = main.cc
+src = main.cc wm.cc
 cflags = -g -std=c++17 \
          -Wall -Wextra -Wduplicated-cond -Wformat=2 -Wduplicated-branches -Wdouble-promotion -Wvla \
          -Wnull-dereference -Wdisabled-optimization -Wlogical-op -Wtrampolines -Wpointer-arith \
@@ -19,7 +19,7 @@ all: $(bin)
 
 $(bin): $(obj)
 	@echo "cxx $(@F)"
-	@$(cxx) $< -o $@ $(lflags)
+	@$(cxx) $^ -o $@ $(lflags)
 
 $(obj): | $(builddir)
 
