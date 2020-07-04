@@ -1,4 +1,4 @@
-#include "wm.h"
+#include "wm.hh"
 
 int main()
 {

@@ -1,5 +1,5 @@
-#include "wm.h"
-#include "util.h"
+#include "wm.hh"
+#include "util.hh"
 
 void wm::init()
 {

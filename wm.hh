@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
-#include "keys.h"
+#include "keys.hh"
 
 class wm
 {

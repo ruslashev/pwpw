@@ -2,7 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
-enum key {
+enum key
+{
 	KEY_ESC = GLFW_KEY_ESCAPE,
 };
 
