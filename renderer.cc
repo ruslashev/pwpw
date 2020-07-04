@@ -10,7 +10,7 @@ void renderer::init()
 	glewInit();
 }
 
-void renderer::draw()
+void renderer::render()
 {
 }
 

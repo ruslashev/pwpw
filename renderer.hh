@@ -4,7 +4,7 @@ class renderer
 {
 public:
 	void init();
-	void draw();
+	void render();
 	~renderer();
 };
 

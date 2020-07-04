@@ -19,6 +19,8 @@ int main()
 
 		done |= w.should_close();
 
+		r.render();
+
 		w.swap_window();
 	}
 }
