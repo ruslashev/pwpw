@@ -62,17 +62,12 @@ void renderer::init(int w, int h)
 		}
 	)";
 
-	GLuint vsh_id = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vsh_id, 1, &vsh, NULL);
-	glCompileShader(vsh_id);
-
-	GLuint fsh_id = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fsh_id, 1, &fsh, NULL);
-	glCompileShader(fsh_id);
+	vert.create(GL_VERTEX_SHADER, vsh);
+	frag.create(GL_FRAGMENT_SHADER, fsh);
 
 	GLuint shprog_id = glCreateProgram();
-	glAttachShader(shprog_id, vsh_id);
-	glAttachShader(shprog_id, vsh_id);
+	glAttachShader(shprog_id, vert.id);
+	glAttachShader(shprog_id, frag.id);
 
 	glBindFragDataLocation(shprog_id, 0, "out_color");
 

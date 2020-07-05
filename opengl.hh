@@ -11,3 +11,12 @@ public:
 	~vao();
 };
 
+class shader
+{
+public:
+	GLuint id;
+
+	void create(GLuint type, const char * const src);
+	~shader();
+};
+
