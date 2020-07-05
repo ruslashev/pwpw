@@ -12,6 +12,17 @@ public:
 	~vao();
 };
 
+class buffer
+{
+	GLuint id;
+	GLuint type;
+public:
+	void create(GLuint _type);
+	void bind();
+	void push_data(size_t size, const void * const data);
+	~buffer();
+};
+
 class shader
 {
 public:

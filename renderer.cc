@@ -14,25 +14,21 @@ void renderer::init(int w, int h)
 
 	va.create();
 
-	float vertices[] = {
+	float vertices_data[] = {
 		 0.0f,  0.5f,
 		 0.5f, -0.5f,
 		-0.5f, -0.5f
 	};
 
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	vertices.create(GL_ARRAY_BUFFER);
+	vertices.push_data(sizeof(vertices_data), vertices_data);
 
-	GLuint elements[] = {
+	GLuint elements_data[] = {
 		0, 1, 2
 	};
 
-	GLuint ebo;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+	elements.create(GL_ELEMENT_ARRAY_BUFFER);
+	elements.push_data(sizeof(elements_data), elements_data);
 
 	float translations[2 * 100];
 	int index = 0;
@@ -42,10 +38,8 @@ void renderer::init(int w, int h)
 			translations[index++] = y;
 		}
 
-	unsigned int inst_vbo;
-	glGenBuffers(1, &inst_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, inst_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(translations), translations, GL_STATIC_DRAW);
+	instances.create(GL_ARRAY_BUFFER);
+	instances.push_data(sizeof(translations), translations);
 
 	strlit vsh = R"(
 		#version 150 core
@@ -76,10 +70,10 @@ void renderer::init(int w, int h)
 
 	shp.create(vsh, fsh);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	vertices.bind();
 	shp.vertex_attrib("position", 2, 0, 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, inst_vbo);
+	instances.bind();
 	int inst_offset_attrib_id = shp.vertex_attrib("inst_offset", 2, 0, 0);
 	glVertexAttribDivisor(inst_offset_attrib_id, 1);
 

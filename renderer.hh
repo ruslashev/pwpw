@@ -5,6 +5,9 @@
 class renderer
 {
 	vao va;
+	buffer vertices;
+	buffer elements;
+	buffer instances;
 	shprog shp;
 
 public:

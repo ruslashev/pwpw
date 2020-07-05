@@ -18,6 +18,28 @@ vao::~vao()
 	glDeleteVertexArrays(1, &id);
 }
 
+void buffer::create(GLuint _type)
+{
+	type = _type;
+	glGenBuffers(1, &id);
+}
+
+void buffer::bind()
+{
+	glBindBuffer(type, id);
+}
+
+void buffer::push_data(size_t size, const void * const data)
+{
+	bind();
+	glBufferData(type, size, data, GL_STATIC_DRAW);
+}
+
+buffer::~buffer()
+{
+	glDeleteBuffers(1, &id);
+}
+
 void shader::create(GLuint type, strlit src)
 {
 	id = glCreateShader(type);
