@@ -14,6 +14,7 @@ public:
 	void poll_events();
 	void swap_window();
 	bool key_down(key k);
+	double get_time();
 	~wm();
 };
 

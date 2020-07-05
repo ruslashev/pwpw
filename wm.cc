@@ -49,6 +49,11 @@ bool wm::key_down(key k)
 	return glfwGetKey(_window, k) == GLFW_PRESS;
 }
 
+double wm::get_time()
+{
+	return glfwGetTime();
+}
+
 wm::~wm()
 {
 	glfwDestroyWindow(_window);
