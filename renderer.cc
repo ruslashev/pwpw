@@ -12,9 +12,7 @@ void renderer::init(int w, int h)
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	va.create();
 
 	float vertices[] = {
 		 0.0f,  0.5f,
