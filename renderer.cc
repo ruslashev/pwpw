@@ -50,12 +50,11 @@ void renderer::init(int w, int h)
 		in vec2 position;
 		in vec2 inst_offset;
 
-		uniform mat4 view;
 		uniform mat4 proj;
 
 		void main()
 		{
-			gl_Position = proj * view * vec4(position + inst_offset, 0.0, 1.0);
+			gl_Position = proj * vec4(position + inst_offset, 0.0, 1.0);
 		}
 	)";
 
@@ -78,12 +77,6 @@ void renderer::init(int w, int h)
 	instances.bind();
 	int inst_offset_attrib_id = shp.vertex_attrib("inst_offset", 2, 0, 0);
 	glVertexAttribDivisor(inst_offset_attrib_id, 1);
-
-	glm::mat4 view = glm::lookAt(glm::vec3(10.f, 10.f, 10.f),
-	                             glm::vec3(0.f, 0.f, 0.f),
-	                             glm::vec3(0.f, 0.f, 1.f));
-	int uni_view_id  = shp.create_uniform("view");
-	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(view));
 
 	glm::mat4 proj = glm::perspective(glm::radians(60.0f), (float)w / (float)h, 0.1f, 100.0f);
 	int uni_proj_id = shp.create_uniform("proj");
