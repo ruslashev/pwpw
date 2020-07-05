@@ -32,7 +32,7 @@ class shprog
 public:
 	void create(strlit vsh, strlit fsh);
 	void bind();
-	void vertex_attrib(strlit name, int dim, size_t stride, void *offset);
+	int vertex_attrib(strlit name, int dim, size_t stride, void *offset);
 	int create_uniform(strlit name);
 	~shprog();
 };
