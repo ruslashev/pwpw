@@ -66,8 +66,10 @@ void shader::create(GLuint type, strlit src)
 		delete [] infolog;
 	}
 
-	if (status != GL_TRUE)
+	if (status != GL_TRUE) {
+		glDeleteShader(id);
 		die("failed to compile " << typestr << " shader");
+	}
 }
 
 shader::~shader()
@@ -93,8 +95,10 @@ void shprog::check_link_status()
 		delete [] infolog;
 	}
 
-	if (status != GL_TRUE)
+	if (status != GL_TRUE) {
+		glDeleteProgram(id);
 		die("failed to compile shader program");
+	}
 }
 
 void shprog::create(strlit vsh, strlit fsh)
@@ -110,6 +114,9 @@ void shprog::create(strlit vsh, strlit fsh)
 	glLinkProgram(id);
 
 	check_link_status();
+
+	glDetachShader(id, vert.id);
+	glDetachShader(id, frag.id);
 
 	bind();
 }
