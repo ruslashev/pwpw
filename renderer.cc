@@ -33,28 +33,50 @@ void renderer::init(int w, int h)
 	elements.create(GL_ELEMENT_ARRAY_BUFFER);
 	elements.push_data(sizeof(elements_data), elements_data);
 
-	float translations[2 * 100];
+	float instances_data[3 * 100];
 	int index = 0;
 	for (int y = 0; y < 10; ++y)
 		for (int x = 0; x < 10; ++x) {
-			translations[index++] = x * 100;
-			translations[index++] = y * 100;
+			instances_data[index++] = x * 100;
+			instances_data[index++] = y * 100;
+			instances_data[index++] = glm::radians((float)(rand() % 360));
 		}
 
 	instances.create(GL_ARRAY_BUFFER);
-	instances.push_data(sizeof(translations), translations);
+	instances.push_data(sizeof(instances_data), instances_data);
 
 	strlit vsh = R"(
 		#version 150 core
 
 		in vec2 position;
-		in vec2 inst_offset;
+		in vec3 inst_data;
 
 		uniform mat4 proj;
 
+		mat4 translate(vec2 pos)
+		{
+			return mat4(1,     0,     0, 0,
+			            0,     1,     0, 0,
+			            0,     0,     1, 0,
+			            pos.x, pos.y, 0, 1);
+		}
+
+		mat4 rotate(float ang)
+		{
+			return mat4(cos(ang), -sin(ang), 0, 0,
+			            sin(ang),  cos(ang), 0, 0,
+			            0,         0,        1, 0,
+			            0,         0,        0, 1);
+		}
+
 		void main()
 		{
-			gl_Position = proj * vec4(position + inst_offset, 0.0, 1.0);
+			gl_Position = proj *
+				translate(inst_data.xy) *
+				translate(vec2(25, 25)) *
+				rotate(inst_data.z) *
+				translate(vec2(-25, -25)) *
+				vec4(position, 0.0, 1.0);
 		}
 	)";
 
@@ -75,8 +97,8 @@ void renderer::init(int w, int h)
 	shp.vertex_attrib("position", 2, 0, 0);
 
 	instances.bind();
-	int inst_offset_attrib_id = shp.vertex_attrib("inst_offset", 2, 0, 0);
-	glVertexAttribDivisor(inst_offset_attrib_id, 1);
+	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, 0, 0);
+	glVertexAttribDivisor(inst_data_attrib_id, 1);
 
 	glm::mat4 proj = glm::ortho(0.f, (float)w, (float)h, 0.f, 0.f, 1.f);
 	int uni_proj_id = shp.create_uniform("proj");
