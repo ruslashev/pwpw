@@ -36,7 +36,7 @@ void renderer::init(int w, int h)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 
-	const char * const vsh = R"(
+	strlit vsh = R"(
 		#version 150 core
 
 		in vec2 position;
@@ -51,7 +51,7 @@ void renderer::init(int w, int h)
 		}
 	)";
 
-	const char * const fsh = R"(
+	strlit fsh = R"(
 		#version 150 core
 
 		out vec4 out_color;

@@ -18,7 +18,7 @@ vao::~vao()
 	glDeleteVertexArrays(1, &id);
 }
 
-void shader::create(GLuint type, const char * const src)
+void shader::create(GLuint type, strlit src)
 {
 	id = glCreateShader(type);
 
@@ -32,7 +32,7 @@ void shader::create(GLuint type, const char * const src)
 	GLint loglen;
 	glGetShaderiv(id, GL_INFO_LOG_LENGTH, &loglen);
 
-	const char * const typestr = type == GL_VERTEX_SHADER ? "vertex" : "fragment";
+	strlit typestr = type == GL_VERTEX_SHADER ? "vertex" : "fragment";
 
 	if (loglen != 0) {
 		char *infolog = new char[loglen];
@@ -75,7 +75,7 @@ void shprog::check_link_status()
 		die("failed to compile shader program");
 }
 
-void shprog::create(const char * const vsh, const char * const fsh)
+void shprog::create(strlit vsh, strlit fsh)
 {
 	vert.create(GL_VERTEX_SHADER, vsh);
 	frag.create(GL_FRAGMENT_SHADER, fsh);
@@ -97,14 +97,14 @@ void shprog::bind()
 	glUseProgram(id);
 }
 
-void shprog::vertex_attrib(const char * const name, int dim, size_t stride, void *offset)
+void shprog::vertex_attrib(strlit name, int dim, size_t stride, void *offset)
 {
 	GLint attrib_id = glGetAttribLocation(id, name);
 	glEnableVertexAttribArray(attrib_id);
 	glVertexAttribPointer(attrib_id, dim, GL_FLOAT, GL_FALSE, stride, offset);
 }
 
-int shprog::create_uniform(const char * const name)
+int shprog::create_uniform(strlit name)
 {
 	return glGetUniformLocation(id, name);
 }

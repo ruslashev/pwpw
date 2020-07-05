@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#include "macros.hh"
 
 class vao
 {
@@ -16,7 +17,7 @@ class shader
 public:
 	GLuint id;
 
-	void create(GLuint type, const char * const src);
+	void create(GLuint type, strlit src);
 	~shader();
 };
 
@@ -29,10 +30,10 @@ class shprog
 
 	void check_link_status();
 public:
-	void create(const char * const vsh, const char * const fsh);
+	void create(strlit vsh, strlit fsh);
 	void bind();
-	void vertex_attrib(const char * const name, int dim, size_t stride, void *offset);
-	int create_uniform(const char * const name);
+	void vertex_attrib(strlit name, int dim, size_t stride, void *offset);
+	int create_uniform(strlit name);
 	~shprog();
 };
 
