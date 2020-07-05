@@ -146,3 +146,56 @@ shprog::~shprog()
 	glDeleteProgram(id);
 }
 
+static const char* gl_message_type(GLenum type)
+{
+	switch (type) {
+	case GL_DEBUG_TYPE_ERROR:               return "error";
+	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: return "deprecated_behavior";
+	case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  return "undefined_behavior";
+	case GL_DEBUG_TYPE_PORTABILITY:         return "portability";
+	case GL_DEBUG_TYPE_PERFORMANCE:         return "performance";
+	case GL_DEBUG_TYPE_OTHER:               return "other";
+	case GL_DEBUG_TYPE_MARKER:              return "marker";
+	case GL_DEBUG_TYPE_PUSH_GROUP:          return "push_group";
+	case GL_DEBUG_TYPE_POP_GROUP:           return "pop_group";
+	default:                                return "unknown";
+	}
+}
+
+static const char* gl_message_severity(GLenum severity)
+{
+	switch (severity) {
+	case GL_DEBUG_SEVERITY_HIGH:         return "high";
+	case GL_DEBUG_SEVERITY_MEDIUM:       return "medium";
+	case GL_DEBUG_SEVERITY_LOW:          return "low";
+	case GL_DEBUG_SEVERITY_NOTIFICATION: return "notification";
+	default:                             return "unknown";
+	}
+}
+
+static const char* gl_message_source(GLenum source)
+{
+	switch (source) {
+	case GL_DEBUG_SOURCE_API:             return "api";
+	case GL_DEBUG_SOURCE_APPLICATION:     return "application";
+	case GL_DEBUG_SOURCE_OTHER:           return "other";
+	case GL_DEBUG_SOURCE_SHADER_COMPILER: return "shader_compiler";
+	case GL_DEBUG_SOURCE_THIRD_PARTY:     return "third_party";
+	case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   return "window_system";
+	default:                              return "unknown";
+	}
+}
+
+void gl_message_cb(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+		const GLchar *message, const void *userdata)
+{
+	if (source == GL_DEBUG_SOURCE_SHADER_COMPILER && severity == GL_DEBUG_SEVERITY_NOTIFICATION)
+		return;
+
+	std::cerr << "[GL"
+	          << " " << gl_message_type(type)
+	          << " " << gl_message_severity(severity)
+	          << " " << gl_message_source(source)
+	          << "]: " << message << std::endl;
+}
+

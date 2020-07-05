@@ -12,6 +12,9 @@ void renderer::init(int w, int h)
 	glewExperimental = GL_TRUE;
 	glewInit();
 
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(gl_message_cb, nullptr);
+
 	va.create();
 
 	float vertices_data[] = {

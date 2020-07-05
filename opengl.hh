@@ -48,3 +48,6 @@ public:
 	~shprog();
 };
 
+void gl_message_cb(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+		const GLchar *message, const void *userdata);
+
