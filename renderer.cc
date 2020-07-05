@@ -18,9 +18,9 @@ void renderer::init(int w, int h)
 	va.create();
 
 	float vertices_data[] = {
-		 0.0f,  0.5f,
-		 0.5f, -0.5f,
-		-0.5f, -0.5f
+		25.f, 50.f,
+		50.f, 0.f,
+		0.f,  0.f
 	};
 
 	vertices.create(GL_ARRAY_BUFFER);
@@ -37,8 +37,8 @@ void renderer::init(int w, int h)
 	int index = 0;
 	for (int y = 0; y < 10; ++y)
 		for (int x = 0; x < 10; ++x) {
-			translations[index++] = x;
-			translations[index++] = y;
+			translations[index++] = x * 100;
+			translations[index++] = y * 100;
 		}
 
 	instances.create(GL_ARRAY_BUFFER);
@@ -78,7 +78,7 @@ void renderer::init(int w, int h)
 	int inst_offset_attrib_id = shp.vertex_attrib("inst_offset", 2, 0, 0);
 	glVertexAttribDivisor(inst_offset_attrib_id, 1);
 
-	glm::mat4 proj = glm::perspective(glm::radians(60.0f), (float)w / (float)h, 0.1f, 100.0f);
+	glm::mat4 proj = glm::ortho(0.f, (float)w, (float)h, 0.f, 0.f, 1.f);
 	int uni_proj_id = shp.create_uniform("proj");
 	glUniformMatrix4fv(uni_proj_id, 1, GL_FALSE, glm::value_ptr(proj));
 }
