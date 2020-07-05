@@ -64,9 +64,7 @@ void renderer::init(int w, int h)
 
 	shp.create(vsh, fsh);
 
-	GLint pos_attrib_id = glGetAttribLocation(shp.id, "position");
-	glEnableVertexAttribArray(pos_attrib_id);
-	glVertexAttribPointer(pos_attrib_id, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	shp.vertex_attrib("position", 2, 0, 0);
 
 	glm::mat4 model = glm::mat4(1.0f);
 	GLint uni_trans_id = glGetUniformLocation(shp.id, "model");

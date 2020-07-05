@@ -31,6 +31,7 @@ public:
 
 	void create(const char * const vsh, const char * const fsh);
 	void bind();
+	void vertex_attrib(const char * const name, int dim, size_t stride, void *offset);
 	~shprog();
 };
 

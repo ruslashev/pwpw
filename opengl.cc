@@ -97,6 +97,13 @@ void shprog::bind()
 	glUseProgram(id);
 }
 
+void shprog::vertex_attrib(const char * const name, int dim, size_t stride, void *offset)
+{
+	GLint attrib_id = glGetAttribLocation(id, name);
+	glEnableVertexAttribArray(attrib_id);
+	glVertexAttribPointer(attrib_id, dim, GL_FLOAT, GL_FALSE, stride, offset);
+}
+
 shprog::~shprog()
 {
 	glDeleteProgram(id);
