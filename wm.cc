@@ -51,6 +51,7 @@ bool wm::key_down(key k)
 
 wm::~wm()
 {
+	glfwDestroyWindow(_window);
 	glfwTerminate();
 }
 
