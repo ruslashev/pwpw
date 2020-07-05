@@ -1,6 +1,7 @@
 #pragma once
 
 #include "opengl.hh"
+#include "simulation.hh"
 
 class renderer
 {
@@ -12,7 +13,7 @@ class renderer
 
 public:
 	void init(int w, int h);
-	void render();
+	void render(const state *s);
 	~renderer();
 };
 

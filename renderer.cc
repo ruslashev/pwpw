@@ -33,17 +33,7 @@ void renderer::init(int w, int h)
 	elements.create(GL_ELEMENT_ARRAY_BUFFER);
 	elements.push_data(sizeof(elements_data), elements_data);
 
-	float instances_data[3 * 100];
-	int index = 0;
-	for (int y = 0; y < 10; ++y)
-		for (int x = 0; x < 10; ++x) {
-			instances_data[index++] = x * 100;
-			instances_data[index++] = y * 100;
-			instances_data[index++] = glm::radians((float)(rand() % 360));
-		}
-
 	instances.create(GL_ARRAY_BUFFER);
-	instances.push_data(sizeof(instances_data), instances_data);
 
 	strlit vsh = R"(
 		#version 150 core
@@ -105,12 +95,25 @@ void renderer::init(int w, int h)
 	glUniformMatrix4fv(uni_proj_id, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
-void renderer::render()
+void renderer::render(const state *s)
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glDrawElementsInstanced(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0, 100);
+	size_t nships = s->ships.size();
+	std::vector<float> instances_data;
+	instances_data.resize(3 * nships);
+	int idx = 0;
+	for (size_t i = 0; i < nships; ++i) {
+		instances_data[idx++] = s->ships[i].position.x;
+		instances_data[idx++] = s->ships[i].position.y;
+		instances_data[idx++] = s->ships[i].angle;
+	}
+
+	instances.bind();
+	instances.stream_data(instances_data.size() * sizeof(instances_data[0]), instances_data.data());
+
+	glDrawElementsInstanced(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0, nships);
 }
 
 renderer::~renderer()

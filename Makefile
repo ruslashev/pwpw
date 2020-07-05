@@ -1,4 +1,4 @@
-src = main.cc wm.cc renderer.cc opengl.cc
+src = main.cc wm.cc renderer.cc opengl.cc simulation.cc
 cflags = -g -std=c++17 \
          -Wall -Wextra -Wduplicated-cond -Wformat=2 -Wduplicated-branches -Wdouble-promotion -Wvla \
          -Wnull-dereference -Wdisabled-optimization -Wlogical-op -Wtrampolines -Wpointer-arith \
@@ -18,7 +18,7 @@ all: $(bin)
 	./$(bin)
 
 $(bin): $(obj)
-	@echo "cxx $(@F)"
+	@echo "ld $(@F)"
 	@$(cxx) $^ -o $@ $(lflags)
 
 $(obj): | $(builddir)
