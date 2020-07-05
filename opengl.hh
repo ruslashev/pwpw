@@ -20,6 +20,7 @@ public:
 	void create(GLuint _type);
 	void bind();
 	void push_data(size_t size, const void * const data);
+	void stream_data(size_t size, const void * const data);
 	~buffer();
 };
 

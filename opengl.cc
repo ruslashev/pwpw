@@ -35,6 +35,12 @@ void buffer::push_data(size_t size, const void * const data)
 	glBufferData(type, size, data, GL_STATIC_DRAW);
 }
 
+void buffer::stream_data(size_t size, const void * const data)
+{
+	bind();
+	glBufferData(type, size, data, GL_STREAM_DRAW);
+}
+
 buffer::~buffer()
 {
 	glDeleteBuffers(1, &id);
