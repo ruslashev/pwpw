@@ -67,17 +67,17 @@ void renderer::init(int w, int h)
 	shp.vertex_attrib("position", 2, 0, 0);
 
 	glm::mat4 model = glm::mat4(1.0f);
-	GLint uni_trans_id = glGetUniformLocation(shp.id, "model");
-	glUniformMatrix4fv(uni_trans_id, 1, GL_FALSE, glm::value_ptr(model));
+	int uni_model_id = shp.create_uniform("model");
+	glUniformMatrix4fv(uni_model_id, 1, GL_FALSE, glm::value_ptr(model));
 
 	glm::mat4 view = glm::lookAt(glm::vec3(1.f, 1.f, 1.f),
 	                             glm::vec3(0.f, 0.f, 0.f),
 	                             glm::vec3(0.f, 0.f, 1.f));
-	GLint uni_view_id = glGetUniformLocation(shp.id, "view");
+	int uni_view_id  = shp.create_uniform("view");
 	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(view));
 
 	glm::mat4 proj = glm::perspective(glm::radians(60.0f), (float)w / (float)h, 0.1f, 10.0f);
-	GLint uni_proj_id = glGetUniformLocation(shp.id, "proj");
+	int uni_proj_id = shp.create_uniform("proj");
 	glUniformMatrix4fv(uni_proj_id, 1, GL_FALSE, glm::value_ptr(proj));
 }
 

@@ -22,16 +22,17 @@ public:
 
 class shprog
 {
+	GLuint id;
+
 	shader vert;
 	shader frag;
 
 	void check_link_status();
 public:
-	GLuint id;
-
 	void create(const char * const vsh, const char * const fsh);
 	void bind();
 	void vertex_attrib(const char * const name, int dim, size_t stride, void *offset);
+	int create_uniform(const char * const name);
 	~shprog();
 };
 

@@ -104,6 +104,11 @@ void shprog::vertex_attrib(const char * const name, int dim, size_t stride, void
 	glVertexAttribPointer(attrib_id, dim, GL_FLOAT, GL_FALSE, stride, offset);
 }
 
+int shprog::create_uniform(const char * const name)
+{
+	return glGetUniformLocation(id, name);
+}
+
 shprog::~shprog()
 {
 	glDeleteProgram(id);
