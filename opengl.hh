@@ -20,3 +20,15 @@ public:
 	~shader();
 };
 
+class shprog
+{
+	shader vert;
+	shader frag;
+public:
+	GLuint id;
+
+	void create(const char * const vsh, const char * const fsh);
+	void bind();
+	~shprog();
+};
+

@@ -62,36 +62,24 @@ void renderer::init(int w, int h)
 		}
 	)";
 
-	vert.create(GL_VERTEX_SHADER, vsh);
-	frag.create(GL_FRAGMENT_SHADER, fsh);
+	shp.create(vsh, fsh);
 
-	GLuint shprog_id = glCreateProgram();
-	glAttachShader(shprog_id, vert.id);
-	glAttachShader(shprog_id, frag.id);
-
-	glBindFragDataLocation(shprog_id, 0, "out_color");
-
-	glLinkProgram(shprog_id);
-
-	glUseProgram(shprog_id);
-
-	GLint pos_attrib_id = glGetAttribLocation(shprog_id, "position");
+	GLint pos_attrib_id = glGetAttribLocation(shp.id, "position");
+	glEnableVertexAttribArray(pos_attrib_id);
 	glVertexAttribPointer(pos_attrib_id, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glEnableVertexAttribArray(pos_attrib_id);
-
 	glm::mat4 model = glm::mat4(1.0f);
-	GLint uni_trans_id = glGetUniformLocation(shprog_id, "model");
+	GLint uni_trans_id = glGetUniformLocation(shp.id, "model");
 	glUniformMatrix4fv(uni_trans_id, 1, GL_FALSE, glm::value_ptr(model));
 
 	glm::mat4 view = glm::lookAt(glm::vec3(1.f, 1.f, 1.f),
 	                             glm::vec3(0.f, 0.f, 0.f),
 	                             glm::vec3(0.f, 0.f, 1.f));
-	GLint uni_view_id = glGetUniformLocation(shprog_id, "view");
+	GLint uni_view_id = glGetUniformLocation(shp.id, "view");
 	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(view));
 
 	glm::mat4 proj = glm::perspective(glm::radians(60.0f), (float)w / (float)h, 0.1f, 10.0f);
-	GLint uni_proj_id = glGetUniformLocation(shprog_id, "proj");
+	GLint uni_proj_id = glGetUniformLocation(shp.id, "proj");
 	glUniformMatrix4fv(uni_proj_id, 1, GL_FALSE, glm::value_ptr(proj));
 }
 

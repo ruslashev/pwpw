@@ -5,8 +5,7 @@
 class renderer
 {
 	vao va;
-	shader vert;
-	shader frag;
+	shprog shp;
 
 public:
 	void init(int w, int h);

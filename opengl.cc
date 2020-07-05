@@ -53,3 +53,28 @@ shader::~shader()
 	glDeleteShader(id);
 }
 
+void shprog::create(const char * const vsh, const char * const fsh)
+{
+	vert.create(GL_VERTEX_SHADER, vsh);
+	frag.create(GL_FRAGMENT_SHADER, fsh);
+
+	id = glCreateProgram();
+
+	glAttachShader(id, vert.id);
+	glAttachShader(id, frag.id);
+
+	glLinkProgram(id);
+
+	bind();
+}
+
+void shprog::bind()
+{
+	glUseProgram(id);
+}
+
+shprog::~shprog()
+{
+	glDeleteProgram(id);
+}
+
