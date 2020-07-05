@@ -24,6 +24,8 @@ class shprog
 {
 	shader vert;
 	shader frag;
+
+	void check_link_status();
 public:
 	GLuint id;
 

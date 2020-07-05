@@ -53,6 +53,28 @@ shader::~shader()
 	glDeleteShader(id);
 }
 
+void shprog::check_link_status()
+{
+	GLint status;
+	glGetProgramiv(id, GL_LINK_STATUS, &status);
+
+	GLint loglen;
+	glGetProgramiv(id, GL_INFO_LOG_LENGTH, &loglen);
+
+	if (loglen != 0) {
+		char *infolog = new char[loglen];
+		glGetProgramInfoLog(id, loglen, NULL, infolog);
+
+		std::cout << "shader program info log:" << std::endl;
+		std::cout << infolog;
+
+		delete [] infolog;
+	}
+
+	if (status != GL_TRUE)
+		die("failed to compile shader program");
+}
+
 void shprog::create(const char * const vsh, const char * const fsh)
 {
 	vert.create(GL_VERTEX_SHADER, vsh);
@@ -64,6 +86,8 @@ void shprog::create(const char * const vsh, const char * const fsh)
 	glAttachShader(id, frag.id);
 
 	glLinkProgram(id);
+
+	check_link_status();
 
 	bind();
 }
