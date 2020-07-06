@@ -25,6 +25,13 @@ void mainloop::init()
 	r.init(winw, winh);
 
 	add_entities(&current_state);
+
+	w.mb_cb = mouse_button_cb;
+}
+
+void mainloop::mouse_button_cb(mouse_key k, action a)
+{
+	printf("mouse button event %d %d\n", k, a);
 }
 
 void mainloop::poll_events()

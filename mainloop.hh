@@ -15,6 +15,7 @@ class mainloop
 	bool done;
 
 	void init();
+	static void mouse_button_cb(mouse_key k, action a);
 	void poll_events();
 	void update(float t, float dt);
 	void draw(float alpha);

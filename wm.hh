@@ -4,11 +4,15 @@
 #include <GLFW/glfw3.h>
 #include "keys.hh"
 
+typedef void (*mouse_button_cb_t)(mouse_key, action);
+
 class wm
 {
 	GLFWwindow *_window;
-
 public:
+	mouse_button_cb_t mb_cb;
+
+	wm();
 	void init(int w, int h);
 	bool should_close();
 	void poll_events();

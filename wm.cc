@@ -10,6 +10,18 @@ static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor
 	glfwSetWindowPos(window, (mode->width - w) / 2, (mode->height - h) / 2);
 }
 
+static void mouse_button_cb(GLFWwindow *window, int button, int maction, int mods)
+{
+	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
+
+	if (w->mb_cb)
+		w->mb_cb((mouse_key)button, (action)maction);
+}
+
+wm::wm() : _window(nullptr), mb_cb(nullptr)
+{
+}
+
 void wm::init(int w, int h)
 {
 	die_if(!glfwInit());
@@ -24,7 +36,11 @@ void wm::init(int w, int h)
 	_window = glfwCreateWindow(w, h, "pwpw", nullptr, nullptr);
 	die_if(_window == nullptr);
 
+	glfwSetWindowUserPointer(_window, this);
+
 	center_window(_window, w, h, glfwGetPrimaryMonitor());
+
+	glfwSetMouseButtonCallback(_window, mouse_button_cb);
 
 	glfwMakeContextCurrent(_window);
 
