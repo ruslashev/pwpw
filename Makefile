@@ -1,4 +1,4 @@
-src = main.cc wm.cc renderer.cc opengl.cc simulation.cc
+src = main.cc wm.cc renderer.cc opengl.cc simulation.cc mainloop.cc
 cflags = -g -std=c++17 \
          -Wall -Wextra -Wduplicated-cond -Wformat=2 -Wduplicated-branches -Wdouble-promotion -Wvla \
          -Wnull-dereference -Wdisabled-optimization -Wlogical-op -Wtrampolines -Wpointer-arith \
