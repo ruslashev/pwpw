@@ -15,6 +15,7 @@ public:
 	void swap_window();
 	bool key_down(key k);
 	double get_time();
+	void set_title(const char *title);
 	~wm();
 };
 

@@ -54,6 +54,11 @@ double wm::get_time()
 	return glfwGetTime();
 }
 
+void wm::set_title(const char *title)
+{
+	glfwSetWindowTitle(_window, title);
+}
+
 wm::~wm()
 {
 	glfwDestroyWindow(_window);

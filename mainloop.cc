@@ -1,5 +1,6 @@
 #include "mainloop.hh"
 #include <cstdlib>
+#include <cstdio>
 
 static void add_entities(state *s)
 {
@@ -45,6 +46,18 @@ void mainloop::draw(float alpha)
 	r.render(&draw_state);
 }
 
+void mainloop::show_fps(float elapsed, uint64_t frames, float current)
+{
+	char title[100];
+
+	snprintf(title, sizeof(title), "pwpw avg fps %.1f inst fps %.1f dt %.2f ms",
+			(double)(frames / current),
+			(double)(1.f / elapsed),
+			(double)(elapsed * 1000.f));
+
+	w.set_title(title);
+}
+
 void mainloop::run()
 {
 	init();
@@ -59,9 +72,13 @@ void mainloop::run()
 
 	done = false;
 
+	uint64_t frames = 0;
+
 	while (!done) {
 		float current = w.get_time();
 		float elapsed = current - previous;
+
+		show_fps(elapsed, frames, current);
 
 		if (elapsed > max_frametime)
 			elapsed = max_frametime;
@@ -82,6 +99,8 @@ void mainloop::run()
 		draw(accumulator / dt);
 
 		done |= w.should_close();
+
+		frames++;
 
 		w.swap_window();
 	}
