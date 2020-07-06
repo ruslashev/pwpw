@@ -100,20 +100,20 @@ void renderer::render(const state *s)
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	size_t nships = s->ships.size();
+	size_t nentities = s->entities.size();
 	std::vector<float> instances_data;
-	instances_data.resize(3 * nships);
+	instances_data.resize(3 * nentities);
 	int idx = 0;
-	for (size_t i = 0; i < nships; ++i) {
-		instances_data[idx++] = s->ships[i].position.x;
-		instances_data[idx++] = s->ships[i].position.y;
-		instances_data[idx++] = s->ships[i].angle;
+	for (size_t i = 0; i < nentities; ++i) {
+		instances_data[idx++] = s->entities[i].position.x;
+		instances_data[idx++] = s->entities[i].position.y;
+		instances_data[idx++] = s->entities[i].angle;
 	}
 
 	instances.bind();
 	instances.stream_data(instances_data.size() * sizeof(instances_data[0]), instances_data.data());
 
-	glDrawElementsInstanced(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0, nships);
+	glDrawElementsInstanced(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0, nentities);
 }
 
 renderer::~renderer()

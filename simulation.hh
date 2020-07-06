@@ -5,7 +5,7 @@
 
 using glm::vec2;
 
-struct ship
+struct entity
 {
 	vec2 position;
 	float angle;
@@ -13,7 +13,7 @@ struct ship
 
 struct state
 {
-	std::vector<ship> ships;
+	std::vector<entity> entities;
 };
 
 void interpolate_states(const state &s1, const state &s2, double t, state *out);

@@ -2,7 +2,7 @@
 
 #include <glm/gtx/compatibility.hpp>
 
-static void interpolate_ships(const ship &s1, const ship &s2, double t, ship *out)
+static void interpolate_entities(const entity &s1, const entity &s2, double t, entity *out)
 {
 	out->position = glm::lerp(s1.position, s2.position, (float)t);
 	out->angle =    glm::lerp(s1.angle,    s2.angle,    (float)t);
@@ -10,13 +10,13 @@ static void interpolate_ships(const ship &s1, const ship &s2, double t, ship *ou
 
 void interpolate_states(const state &s1, const state &s2, double t, state *out)
 {
-	/* not accounting for removed ships */
+	/* not accounting for removed entities */
 
-	size_t n = s1.ships.size();
+	size_t n = s1.entities.size();
 
-	out->ships.resize(n);
+	out->entities.resize(n);
 
 	for (size_t i = 0; i < n; ++i)
-		interpolate_ships(s1.ships[i], s2.ships[i], t, &out->ships[i]);
+		interpolate_entities(s1.entities[i], s2.entities[i], t, &out->entities[i]);
 }
 

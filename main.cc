@@ -3,15 +3,15 @@
 #include "simulation.hh"
 #include <cstdlib>
 
-static void add_ships(state *s)
+static void add_entities(state *s)
 {
 	for (int y = 0; y < 10; ++y)
 		for (int x = 0; x < 10; ++x) {
-			ship sh = {
+			entity sh = {
 				{ x * 100, y * 100 },
 				(float)(rand() % 360)
 			};
-			s->ships.push_back(sh);
+			s->entities.push_back(sh);
 		}
 }
 
@@ -19,14 +19,11 @@ int main()
 {
 	wm w;
 	renderer r;
-	state s;
 
 	const int winw = 1280, winh = (winw * 3) / 4;
 
 	w.init(winw, winh);
 	r.init(winw, winh);
-
-	add_ships(&s);
 
 	const int tickrate = 50;
 	const double dt = 1. / (double)tickrate;
@@ -39,7 +36,7 @@ int main()
 	state prev_state;
 	state current_state;
 
-	add_ships(&current_state);
+	add_entities(&current_state);
 
 	bool done = false;
 
