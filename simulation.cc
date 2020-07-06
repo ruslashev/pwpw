@@ -20,3 +20,9 @@ void interpolate_states(const state &s1, const state &s2, double t, state *out)
 		interpolate_entities(s1.entities[i], s2.entities[i], t, &out->entities[i]);
 }
 
+void state::update(double t, double dt)
+{
+	for (size_t i = 0; i < entities.size(); ++i)
+		entities[i].angle += 5.f * (float)dt;
+}
+

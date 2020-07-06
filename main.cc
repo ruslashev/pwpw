@@ -58,7 +58,7 @@ int main()
 				done = true;
 
 			prev_state = current_state;
-			// update(&current_state, t, dt);
+			current_state.update(t, dt);
 			t += dt;
 			accumulator -= dt;
 		}
