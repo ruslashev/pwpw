@@ -6,6 +6,26 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <cstdio>
+
+void camera::calculate_viewmat()
+{
+	view = mat4(1);
+
+	view = glm::scale(view, glm::vec3(scale, scale, 1.f));
+}
+
+camera::camera()
+	: scale(1.f)
+	, view(mat4(1))
+{
+}
+
+void camera::change_scale(float diff)
+{
+	scale += scale * diff;
+	calculate_viewmat();
+}
 
 void renderer::init(int w, int h)
 {
@@ -44,6 +64,7 @@ void renderer::init(int w, int h)
 		in vec3 inst_data;
 
 		uniform mat4 proj;
+		uniform mat4 view;
 
 		mat4 translate(vec2 pos)
 		{
@@ -64,6 +85,7 @@ void renderer::init(int w, int h)
 		void main()
 		{
 			gl_Position = proj *
+				view *
 				translate(inst_data.xy) *
 				rotate(inst_data.z) *
 				vec4(position, 0.0, 1.0);
@@ -90,9 +112,12 @@ void renderer::init(int w, int h)
 	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
 
-	glm::mat4 proj = glm::ortho(0.f, (float)w, 0.f, (float)h, 0.f, 1.f);
-	int uni_proj_id = shp.create_uniform("proj");
+	mat4 proj = glm::ortho(0.f, (float)w, 0.f, (float)h, 0.f, 1.f);
+	uni_proj_id = shp.create_uniform("proj");
 	glUniformMatrix4fv(uni_proj_id, 1, GL_FALSE, glm::value_ptr(proj));
+
+	uni_view_id = shp.create_uniform("view");
+	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(cam.view));
 }
 
 void renderer::render(const state *s)
@@ -104,6 +129,12 @@ void renderer::render(const state *s)
 	instances.stream_data(s->entities.size() * sizeof(s->entities[0]), s->entities.data());
 
 	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, s->entities.size());
+}
+
+void renderer::scroll(float diff)
+{
+	cam.change_scale(diff * 0.1f);
+	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(cam.view));
 }
 
 renderer::~renderer()

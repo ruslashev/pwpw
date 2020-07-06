@@ -19,17 +19,16 @@ static void add_entities(state *s)
 
 static void mouse_button_cb(void *userdata, mouse_key k, action a)
 {
-	// printf("mouse button event %d %d\n", k, a);
 }
 
 static void mouse_move_cb(void *userdata, float x, float y)
 {
-	// printf("mouse move event %.1f %.1f\n", (double)x, (double)y);
 }
 
 static void mouse_scroll_cb(void *userdata, float x, float y)
 {
-	printf("mouse scroll event %.0f %.0f\n", (double)x, (double)y);
+	renderer *r = (renderer*)userdata;
+	r->scroll(y);
 }
 
 void mainloop::init()
