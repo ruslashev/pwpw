@@ -27,11 +27,17 @@ void mainloop::init()
 	add_entities(&current_state);
 
 	w.mb_cb = mouse_button_cb;
+	w.m_cb = mouse_move_cb;
 }
 
 void mainloop::mouse_button_cb(mouse_key k, action a)
 {
-	printf("mouse button event %d %d\n", k, a);
+	// printf("mouse button event %d %d\n", k, a);
+}
+
+void mainloop::mouse_move_cb(float x, float y)
+{
+	// printf("mouse move event %.1f %.1f\n", (double)x, (double)y);
 }
 
 void mainloop::poll_events()

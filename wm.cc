@@ -13,9 +13,15 @@ static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor
 static void mouse_button_cb(GLFWwindow *window, int button, int maction, int mods)
 {
 	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
-
 	if (w->mb_cb)
 		w->mb_cb((mouse_key)button, (action)maction);
+}
+
+static void mouse_move_cb(GLFWwindow* window, double x, double y)
+{
+	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
+	if (w->m_cb)
+		w->m_cb((float)x, (float)y);
 }
 
 wm::wm() : _window(nullptr), mb_cb(nullptr)
@@ -41,6 +47,7 @@ void wm::init(int w, int h)
 	center_window(_window, w, h, glfwGetPrimaryMonitor());
 
 	glfwSetMouseButtonCallback(_window, mouse_button_cb);
+	glfwSetCursorPosCallback(_window, mouse_move_cb);
 
 	glfwMakeContextCurrent(_window);
 

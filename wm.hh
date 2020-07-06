@@ -5,12 +5,14 @@
 #include "keys.hh"
 
 typedef void (*mouse_button_cb_t)(mouse_key, action);
+typedef void (*mouse_move_cb_t)(float, float);
 
 class wm
 {
 	GLFWwindow *_window;
 public:
 	mouse_button_cb_t mb_cb;
+	mouse_move_cb_t m_cb;
 
 	wm();
 	void init(int w, int h);
