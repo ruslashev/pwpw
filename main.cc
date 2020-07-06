@@ -8,7 +8,8 @@ static void add_entities(state *s)
 	for (int y = 0; y < 10; ++y)
 		for (int x = 0; x < 10; ++x) {
 			entity sh = {
-				{ x * 100, y * 100 },
+				x * 100.f,
+				y * 100.f,
 				(float)(rand() % 360)
 			};
 			s->entities.push_back(sh);

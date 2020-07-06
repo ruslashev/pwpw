@@ -4,8 +4,9 @@
 
 static void interpolate_entities(const entity &s1, const entity &s2, float t, entity *out)
 {
-	out->position = glm::lerp(s1.position, s2.position, t);
-	out->angle =    glm::lerp(s1.angle,    s2.angle,    t);
+	out->x     = glm::lerp(s1.x,     s2.x,     t);
+	out->y     = glm::lerp(s1.y,     s2.y,     t);
+	out->angle = glm::lerp(s1.angle, s2.angle, t);
 }
 
 void interpolate_states(const state &s1, const state &s2, float t, state *out)

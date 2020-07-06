@@ -7,7 +7,9 @@ using glm::vec2;
 
 struct entity
 {
-	vec2 position;
+	/* first 3 elements must be these for rendering purposes */
+	float x;
+	float y;
 	float angle;
 };
 

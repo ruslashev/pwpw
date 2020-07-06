@@ -87,7 +87,7 @@ void renderer::init(int w, int h)
 	shp.vertex_attrib("position", 2, 0, 0);
 
 	instances.bind();
-	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, 0, 0);
+	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
 
 	glm::mat4 proj = glm::ortho(0.f, (float)w, (float)h, 0.f, 0.f, 1.f);
@@ -97,23 +97,13 @@ void renderer::init(int w, int h)
 
 void renderer::render(const state *s)
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	size_t nentities = s->entities.size();
-	std::vector<float> instances_data;
-	instances_data.resize(3 * nentities);
-	int idx = 0;
-	for (size_t i = 0; i < nentities; ++i) {
-		instances_data[idx++] = s->entities[i].position.x;
-		instances_data[idx++] = s->entities[i].position.y;
-		instances_data[idx++] = s->entities[i].angle;
-	}
-
 	instances.bind();
-	instances.stream_data(instances_data.size() * sizeof(instances_data[0]), instances_data.data());
+	instances.stream_data(s->entities.size() * sizeof(s->entities[0]), s->entities.data());
 
-	glDrawElementsInstanced(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0, nentities);
+	glDrawElementsInstanced(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0, s->entities.size());
 }
 
 renderer::~renderer()
