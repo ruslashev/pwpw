@@ -18,16 +18,18 @@ void renderer::init(int w, int h)
 	va.create();
 
 	float vertices_data[] = {
-		25.f, 50.f,
-		50.f, 0.f,
-		0.f,  0.f
+		 22.f,   0.f,
+		 -8.f,   0.f,
+		-14.f,  18.f,
+		-14.f, -18.f,
 	};
 
 	vertices.create(GL_ARRAY_BUFFER);
 	vertices.push_data(sizeof(vertices_data), vertices_data);
 
 	GLuint elements_data[] = {
-		0, 1, 2
+		0, 2, 1,
+		0, 1, 3,
 	};
 
 	elements.create(GL_ELEMENT_ARRAY_BUFFER);
@@ -63,9 +65,7 @@ void renderer::init(int w, int h)
 		{
 			gl_Position = proj *
 				translate(inst_data.xy) *
-				translate(vec2(25, 25)) *
 				rotate(inst_data.z) *
-				translate(vec2(-25, -25)) *
 				vec4(position, 0.0, 1.0);
 		}
 	)";
@@ -90,7 +90,7 @@ void renderer::init(int w, int h)
 	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
 
-	glm::mat4 proj = glm::ortho(0.f, (float)w, (float)h, 0.f, 0.f, 1.f);
+	glm::mat4 proj = glm::ortho(0.f, (float)w, 0.f, (float)h, 0.f, 1.f);
 	int uni_proj_id = shp.create_uniform("proj");
 	glUniformMatrix4fv(uni_proj_id, 1, GL_FALSE, glm::value_ptr(proj));
 }
@@ -103,7 +103,7 @@ void renderer::render(const state *s)
 	instances.bind();
 	instances.stream_data(s->entities.size() * sizeof(s->entities[0]), s->entities.data());
 
-	glDrawElementsInstanced(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0, s->entities.size());
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, s->entities.size());
 }
 
 renderer::~renderer()
