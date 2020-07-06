@@ -15,8 +15,8 @@ struct state
 {
 	std::vector<entity> entities;
 
-	void update(double t, double dt);
+	void update(float t, float dt);
 };
 
-void interpolate_states(const state &s1, const state &s2, double t, state *out);
+void interpolate_states(const state &s1, const state &s2, float t, state *out);
 

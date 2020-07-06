@@ -26,12 +26,12 @@ int main()
 	r.init(winw, winh);
 
 	const int tickrate = 50;
-	const double dt = 1. / (double)tickrate;
-	const double max_frametime = 0.2;
-	double t = 0;
+	const float dt = 1.f / (float)tickrate;
+	const float max_frametime = 0.2;
+	float t = 0;
 
-	double previous = w.get_time();
-	double accumulator = 0;
+	float previous = w.get_time();
+	float accumulator = 0;
 
 	state prev_state;
 	state current_state;
@@ -41,8 +41,8 @@ int main()
 	bool done = false;
 
 	while (!done) {
-		double current = w.get_time();
-		double elapsed = current - previous;
+		float current = w.get_time();
+		float elapsed = current - previous;
 
 		if (elapsed > max_frametime)
 			elapsed = max_frametime;
@@ -63,7 +63,7 @@ int main()
 			accumulator -= dt;
 		}
 
-		const double alpha = accumulator / dt;
+		const float alpha = accumulator / dt;
 		state draw_state;
 		interpolate_states(prev_state, current_state, alpha, &draw_state);
 
