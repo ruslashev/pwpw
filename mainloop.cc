@@ -1,6 +1,8 @@
 #include "mainloop.hh"
 #include <cstdlib>
 #include <cstdio>
+#include <chrono>
+#include <thread>
 
 static void add_entities(state *s)
 {
@@ -64,7 +66,9 @@ void mainloop::run()
 
 	const int tickrate = 50;
 	const float dt = 1.f / (float)tickrate;
-	const float max_frametime = 0.2;
+	const float max_frametime = 0.2f;
+	const float max_fps = 100.f;
+	const float min_frametime = 1.f / max_fps;
 	float t = 0;
 
 	float previous = w.get_time();
@@ -75,7 +79,7 @@ void mainloop::run()
 	uint64_t frames = 0;
 
 	while (!done) {
-		float current = w.get_time();
+		const float current = w.get_time();
 		float elapsed = current - previous;
 
 		show_fps(elapsed, frames, current);
@@ -103,6 +107,13 @@ void mainloop::run()
 		frames++;
 
 		w.swap_window();
+
+		const float frametime = (float)w.get_time() - current;
+
+		if (frametime < min_frametime) {
+			const uint64_t to_sleep = (min_frametime - frametime) * 1000.f * 1000.f * 1000.f;
+			std::this_thread::sleep_for(std::chrono::nanoseconds(to_sleep));
+		}
 	}
 }
 
