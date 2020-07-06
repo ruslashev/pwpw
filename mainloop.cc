@@ -17,6 +17,21 @@ static void add_entities(state *s)
 		}
 }
 
+static void mouse_button_cb(void *userdata, mouse_key k, action a)
+{
+	// printf("mouse button event %d %d\n", k, a);
+}
+
+static void mouse_move_cb(void *userdata, float x, float y)
+{
+	// printf("mouse move event %.1f %.1f\n", (double)x, (double)y);
+}
+
+static void mouse_scroll_cb(void *userdata, float x, float y)
+{
+	printf("mouse scroll event %.0f %.0f\n", (double)x, (double)y);
+}
+
 void mainloop::init()
 {
 	const int winw = 1280, winh = (winw * 3) / 4;
@@ -26,24 +41,10 @@ void mainloop::init()
 
 	add_entities(&current_state);
 
+	w.event_cb_userdata = &r;
 	w.mb_cb = mouse_button_cb;
 	w.mm_cb = mouse_move_cb;
 	w.ms_cb = mouse_scroll_cb;
-}
-
-void mainloop::mouse_button_cb(mouse_key k, action a)
-{
-	// printf("mouse button event %d %d\n", k, a);
-}
-
-void mainloop::mouse_move_cb(float x, float y)
-{
-	// printf("mouse move event %.1f %.1f\n", (double)x, (double)y);
-}
-
-void mainloop::mouse_scroll_cb(float x, float y)
-{
-	printf("mouse scroll event %.0f %.0f\n", (double)x, (double)y);
 }
 
 void mainloop::poll_events()

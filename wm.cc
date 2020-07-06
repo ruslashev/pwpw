@@ -14,24 +14,29 @@ static void mouse_button_cb(GLFWwindow *window, int button, int maction, int mod
 {
 	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
 	if (w->mb_cb)
-		w->mb_cb((mouse_key)button, (action)maction);
+		w->mb_cb(w->event_cb_userdata, (mouse_key)button, (action)maction);
 }
 
 static void mouse_move_cb(GLFWwindow* window, double x, double y)
 {
 	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
 	if (w->mm_cb)
-		w->mm_cb((float)x, (float)y);
+		w->mm_cb(w->event_cb_userdata, (float)x, (float)y);
 }
 
 static void mouse_scroll_cb(GLFWwindow* window, double x, double y)
 {
 	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
 	if (w->ms_cb)
-		w->ms_cb((float)x, (float)y);
+		w->ms_cb(w->event_cb_userdata, (float)x, (float)y);
 }
 
-wm::wm() : _window(nullptr), mb_cb(nullptr), mm_cb(nullptr), ms_cb(nullptr)
+wm::wm()
+	: _window(nullptr)
+	, mb_cb(nullptr)
+	, mm_cb(nullptr)
+	, ms_cb(nullptr)
+	, event_cb_userdata(nullptr)
 {
 }
 
