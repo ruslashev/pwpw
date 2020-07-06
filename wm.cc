@@ -12,7 +12,7 @@ static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor
 
 void wm::init(int w, int h)
 {
-	glfwInit();
+	die_if(!glfwInit());
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
@@ -27,6 +27,8 @@ void wm::init(int w, int h)
 	center_window(_window, w, h, glfwGetPrimaryMonitor());
 
 	glfwMakeContextCurrent(_window);
+
+	glfwSwapInterval(0);
 }
 
 bool wm::should_close()

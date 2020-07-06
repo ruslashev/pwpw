@@ -67,7 +67,7 @@ void mainloop::run()
 	const int tickrate = 50;
 	const float dt = 1.f / (float)tickrate;
 	const float max_frametime = 0.2f;
-	const float max_fps = 100.f;
+	const float max_fps = 500.f;
 	const float min_frametime = 1.f / max_fps;
 	float t = 0;
 
