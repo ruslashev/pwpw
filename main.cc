@@ -30,9 +30,16 @@ int main()
 
 	const int tickrate = 50;
 	const double dt = 1. / (double)tickrate;
+	const double max_frametime = 0.2;
+	double t = 0;
 
 	double previous = w.get_time();
-	double lag = 0.0;
+	double accumulator = 0;
+
+	state prev_state;
+	state current_state;
+
+	add_ships(&current_state);
 
 	bool done = false;
 
@@ -40,24 +47,30 @@ int main()
 		double current = w.get_time();
 		double elapsed = current - previous;
 
-		previous = current;
-		lag += elapsed;
+		if (elapsed > max_frametime)
+			elapsed = max_frametime;
 
-		while (lag >= dt) {
+		previous = current;
+
+		accumulator += elapsed;
+
+		while (accumulator >= dt) {
 			w.poll_events();
 
 			if (w.key_down(KEY_ESC))
 				done = true;
 
-			// update();
-
-			lag -= dt;
+			prev_state = current_state;
+			// update(&current_state, t, dt);
+			t += dt;
+			accumulator -= dt;
 		}
 
-		s.ships.clear();
-		add_ships(&s);
+		const double alpha = accumulator / dt;
+		state draw_state;
+		interpolate_states(prev_state, current_state, alpha, &draw_state);
 
-		r.render(&s);
+		r.render(&draw_state);
 
 		done |= w.should_close();
 

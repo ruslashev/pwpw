@@ -16,3 +16,5 @@ struct state
 	std::vector<ship> ships;
 };
 
+void interpolate_states(const state &s1, const state &s2, double t, state *out);
+
