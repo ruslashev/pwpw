@@ -27,7 +27,8 @@ void mainloop::init()
 	add_entities(&current_state);
 
 	w.mb_cb = mouse_button_cb;
-	w.m_cb = mouse_move_cb;
+	w.mm_cb = mouse_move_cb;
+	w.ms_cb = mouse_scroll_cb;
 }
 
 void mainloop::mouse_button_cb(mouse_key k, action a)
@@ -38,6 +39,11 @@ void mainloop::mouse_button_cb(mouse_key k, action a)
 void mainloop::mouse_move_cb(float x, float y)
 {
 	// printf("mouse move event %.1f %.1f\n", (double)x, (double)y);
+}
+
+void mainloop::mouse_scroll_cb(float x, float y)
+{
+	printf("mouse scroll event %.0f %.0f\n", (double)x, (double)y);
 }
 
 void mainloop::poll_events()
