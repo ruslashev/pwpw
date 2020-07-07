@@ -79,6 +79,26 @@ bool wm::key_down(key k)
 	return glfwGetKey(_window, k) == GLFW_PRESS;
 }
 
+bool wm::mouse_key_down(mouse_key mk)
+{
+	return glfwGetMouseButton(_window, mk) == GLFW_PRESS;
+}
+
+bool wm::mouse_key_up(mouse_key mk)
+{
+	return glfwGetMouseButton(_window, mk) == GLFW_RELEASE;
+}
+
+void wm::get_mouse_pos(float *x, float *y)
+{
+	double dx, dy;
+
+	glfwGetCursorPos(_window, &dx, &dy);
+
+	*x = (float)dx;
+	*y = (float)dy;
+}
+
 double wm::get_time()
 {
 	return glfwGetTime();
