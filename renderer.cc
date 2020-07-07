@@ -92,12 +92,12 @@ void renderer::init(int w, int h)
 	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
 
-	mat4 proj = glm::ortho(0.f, (float)w, 0.f, (float)h, 0.f, 1.f);
+	glm::mat4 proj = glm::ortho(0.f, (float)w, 0.f, (float)h, 0.f, 1.f);
 	uni_proj_id = shp.create_uniform("proj");
 	glUniformMatrix4fv(uni_proj_id, 1, GL_FALSE, glm::value_ptr(proj));
 
 	uni_view_id = shp.create_uniform("view");
-	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(cam.view));
+	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
 }
 
 void renderer::render(const state *s)
@@ -111,16 +111,9 @@ void renderer::render(const state *s)
 	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, s->entities.size());
 }
 
-void renderer::scroll(float diff)
+void renderer::update_camera_mat(const float *view)
 {
-	cam.change_scale(diff * 0.1f);
-	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(cam.view));
-}
-
-void renderer::pan(float pan_x, float pan_y)
-{
-	cam.change_offset(pan_x, pan_y);
-	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(cam.view));
+	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, view);
 }
 
 renderer::~renderer()

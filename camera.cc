@@ -1,19 +1,24 @@
 #include "camera.hh"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void camera::calculate_viewmat()
 {
-	view = glm::translate(mat4(1), glm::vec3(offset_x, offset_y, 0.f));
+	mat4 view = mat4(1);
+
+	view = glm::translate(view, glm::vec3(offset_x, offset_y, 0.f));
 	view = glm::scale(view, glm::vec3(scale, scale, 1.f));
+
+	r->update_camera_mat(glm::value_ptr(view));
 }
 
-camera::camera()
-	: offset_x(0.f)
-	, offset_y(0.f)
-	, scale(1.f)
-	, view(mat4(1))
+void camera::init(renderer *_r)
 {
+	offset_x = 0.f;
+	offset_y = 0.f;
+	scale = 1.f;
+	r = _r;
 }
 
 void camera::change_scale(float diff)

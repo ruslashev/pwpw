@@ -23,6 +23,7 @@ void mainloop::init()
 
 	w.init(winw, winh, this);
 	r.init(winw, winh);
+	cam.init(&r);
 
 	add_entities(&current_state);
 }
@@ -39,7 +40,7 @@ void mainloop::poll_events()
 		w.get_mouse_pos(&x, &y);
 
 		if (!std::isnan(prev_pan_x))
-			r.pan(x - prev_pan_x, prev_pan_y - y);
+			cam.change_offset(x - prev_pan_x, prev_pan_y - y);
 
 		prev_pan_x = x;
 		prev_pan_y = y;
@@ -89,7 +90,7 @@ void mainloop::mouse_move_cb(float x, float y)
 
 void mainloop::mouse_scroll_cb(float x, float y)
 {
-	r.scroll(y);
+	cam.change_scale(y * 0.1f);
 }
 
 void mainloop::run()

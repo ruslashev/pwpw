@@ -2,12 +2,14 @@
 
 #include "wm.hh"
 #include "renderer.hh"
+#include "camera.hh"
 #include "simulation.hh"
 
 class mainloop
 {
 	wm w;
 	renderer r;
+	camera cam;
 
 	state prev_state;
 	state current_state;

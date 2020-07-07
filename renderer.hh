@@ -2,7 +2,6 @@
 
 #include "opengl.hh"
 #include "simulation.hh"
-#include "camera.hh"
 
 class renderer
 {
@@ -12,15 +11,12 @@ class renderer
 	buffer instances;
 	shprog shp;
 
-	camera cam;
-
 	int uni_proj_id;
 	int uni_view_id;
 public:
 	void init(int w, int h);
 	void render(const state *s);
-	void scroll(float diff);
-	void pan(float pan_x, float pan_y);
+	void update_camera_mat(const float *view);
 	~renderer();
 };
 
