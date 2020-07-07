@@ -17,18 +17,22 @@ static void add_entities(state *s)
 		}
 }
 
-static void mouse_button_cb(void *userdata, mouse_key k, action a)
+static void mouse_button_static_cb(void *userdata, mouse_key k, action a)
 {
+	mainloop *m = (mainloop*)userdata;
+	m->mouse_button_cb(k, a);
 }
 
-static void mouse_move_cb(void *userdata, float x, float y)
+static void mouse_move_static_cb(void *userdata, float x, float y)
 {
+	mainloop *m = (mainloop*)userdata;
+	m->mouse_move_cb(x, y);
 }
 
-static void mouse_scroll_cb(void *userdata, float x, float y)
+static void mouse_scroll_static_cb(void *userdata, float x, float y)
 {
-	renderer *r = (renderer*)userdata;
-	r->scroll(y);
+	mainloop *m = (mainloop*)userdata;
+	m->mouse_scroll_cb(x, y);
 }
 
 void mainloop::init()
@@ -40,10 +44,10 @@ void mainloop::init()
 
 	add_entities(&current_state);
 
-	w.event_cb_userdata = &r;
-	w.mb_cb = mouse_button_cb;
-	w.mm_cb = mouse_move_cb;
-	w.ms_cb = mouse_scroll_cb;
+	w.event_cb_userdata = this;
+	w.mb_cb = mouse_button_static_cb;
+	w.mm_cb = mouse_move_static_cb;
+	w.ms_cb = mouse_scroll_static_cb;
 }
 
 void mainloop::poll_events()
@@ -134,5 +138,18 @@ void mainloop::run()
 			std::this_thread::sleep_for(std::chrono::nanoseconds(to_sleep));
 		}
 	}
+}
+
+void mainloop::mouse_button_cb(mouse_key k, action a)
+{
+}
+
+void mainloop::mouse_move_cb(float x, float y)
+{
+}
+
+void mainloop::mouse_scroll_cb(float x, float y)
+{
+	r.scroll(y);
 }
 

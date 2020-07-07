@@ -21,6 +21,10 @@ class mainloop
 
 	void show_fps(float elapsed, uint64_t frames, float current);
 public:
+	void mouse_button_cb(mouse_key k, action a);
+	void mouse_move_cb(float x, float y);
+	void mouse_scroll_cb(float x, float y);
+
 	void run();
 };
 
