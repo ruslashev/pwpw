@@ -33,6 +33,17 @@ void mainloop::poll_events()
 
 	if (w.key_down(KEY_ESC))
 		done = true;
+
+	if (w.mouse_key_down(MKEY_LEFT)) {
+		float x, y;
+		w.get_mouse_pos(&x, &y);
+
+		if (!std::isnan(prev_pan_x))
+			r.pan(x - prev_pan_x, prev_pan_y - y);
+
+		prev_pan_x = x;
+		prev_pan_y = y;
+	}
 }
 
 void mainloop::update(float t, float dt)
@@ -60,8 +71,16 @@ void mainloop::show_fps(float elapsed, uint64_t frames, float current)
 	w.set_title(title);
 }
 
+mainloop::mainloop()
+	: prev_pan_x(std::numeric_limits<float>::quiet_NaN())
+	, prev_pan_y(prev_pan_x)
+{
+}
+
 void mainloop::mouse_button_cb(mouse_key k, action a)
 {
+	if (k == MKEY_LEFT && a != ACTION_REPEAT)
+		w.get_mouse_pos(&prev_pan_x , &prev_pan_y);
 }
 
 void mainloop::mouse_move_cb(float x, float y)

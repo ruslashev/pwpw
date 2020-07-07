@@ -14,6 +14,8 @@ class mainloop
 
 	bool done;
 
+	float prev_pan_x, prev_pan_y;
+
 	void init();
 	void poll_events();
 	void update(float t, float dt);
@@ -21,10 +23,10 @@ class mainloop
 
 	void show_fps(float elapsed, uint64_t frames, float current);
 public:
+	mainloop();
 	void mouse_button_cb(mouse_key k, action a);
 	void mouse_move_cb(float x, float y);
 	void mouse_scroll_cb(float x, float y);
-
 	void run();
 };
 

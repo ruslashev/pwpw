@@ -10,13 +10,14 @@
 
 void camera::calculate_viewmat()
 {
-	view = mat4(1);
-
+	view = glm::translate(mat4(1), glm::vec3(offset_x, offset_y, 0.f));
 	view = glm::scale(view, glm::vec3(scale, scale, 1.f));
 }
 
 camera::camera()
-	: scale(1.f)
+	: offset_x(0.f)
+	, offset_y(0.f)
+	, scale(1.f)
 	, view(mat4(1))
 {
 }
@@ -24,6 +25,13 @@ camera::camera()
 void camera::change_scale(float diff)
 {
 	scale += scale * diff;
+	calculate_viewmat();
+}
+
+void camera::change_offset(float pan_x, float pan_y)
+{
+	offset_x += pan_x;
+	offset_y += pan_y;
 	calculate_viewmat();
 }
 
@@ -134,6 +142,12 @@ void renderer::render(const state *s)
 void renderer::scroll(float diff)
 {
 	cam.change_scale(diff * 0.1f);
+	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(cam.view));
+}
+
+void renderer::pan(float pan_x, float pan_y)
+{
+	cam.change_offset(pan_x, pan_y);
 	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(cam.view));
 }
 
