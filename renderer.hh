@@ -14,7 +14,10 @@ class renderer
 	int uni_proj_id;
 	int uni_view_id;
 public:
-	void init(int w, int h);
+	int w;
+	int h;
+
+	void init(int _w, int _h);
 	void render(const state *s);
 	void update_camera_mat(const float *view);
 	~renderer();

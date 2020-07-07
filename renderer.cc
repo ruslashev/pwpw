@@ -7,8 +7,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-void renderer::init(int w, int h)
+void renderer::init(int _w, int _h)
 {
+	w = _w;
+	h = _h;
+
 	glewExperimental = GL_TRUE;
 	glewInit();
 

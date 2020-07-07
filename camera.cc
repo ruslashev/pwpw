@@ -8,7 +8,10 @@ void camera::calculate_viewmat()
 	mat4 view = mat4(1);
 
 	view = glm::translate(view, glm::vec3(offset_x, offset_y, 0.f));
+
+	view = glm::translate(view, glm::vec3((float)r->w / 2.f, (float)r->h / 2.f, 0.f));
 	view = glm::scale(view, glm::vec3(scale, scale, 1.f));
+	view = glm::translate(view, glm::vec3(-(float)r->w / 2.f, -(float)r->h / 2.f, 0.f));
 
 	r->update_camera_mat(glm::value_ptr(view));
 }
