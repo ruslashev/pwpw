@@ -1,5 +1,6 @@
 #include "wm.hh"
 #include "util.hh"
+#include "mainloop.hh"
 
 static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor)
 {
@@ -12,35 +13,27 @@ static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor
 
 static void mouse_button_cb(GLFWwindow *window, int button, int maction, int mods)
 {
-	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
-	if (w->mb_cb)
-		w->mb_cb(w->event_cb_userdata, (mouse_key)button, (action)maction);
+	mainloop *m = (mainloop*)glfwGetWindowUserPointer(window);
+	m->mouse_button_cb((mouse_key)button, (action)maction);
 }
 
 static void mouse_move_cb(GLFWwindow* window, double x, double y)
 {
-	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
-	if (w->mm_cb)
-		w->mm_cb(w->event_cb_userdata, (float)x, (float)y);
+	mainloop *m = (mainloop*)glfwGetWindowUserPointer(window);
+	m->mouse_move_cb((float)x, (float)y);
 }
 
 static void mouse_scroll_cb(GLFWwindow* window, double x, double y)
 {
-	const wm *w = (const wm*)glfwGetWindowUserPointer(window);
-	if (w->ms_cb)
-		w->ms_cb(w->event_cb_userdata, (float)x, (float)y);
+	mainloop *m = (mainloop*)glfwGetWindowUserPointer(window);
+	m->mouse_scroll_cb((float)x, (float)y);
 }
 
-wm::wm()
-	: _window(nullptr)
-	, mb_cb(nullptr)
-	, mm_cb(nullptr)
-	, ms_cb(nullptr)
-	, event_cb_userdata(nullptr)
+wm::wm() : _window(nullptr)
 {
 }
 
-void wm::init(int w, int h)
+void wm::init(int w, int h, void *event_cb_userdata)
 {
 	die_if(!glfwInit());
 
@@ -54,13 +47,12 @@ void wm::init(int w, int h)
 	_window = glfwCreateWindow(w, h, "pwpw", nullptr, nullptr);
 	die_if(_window == nullptr);
 
-	glfwSetWindowUserPointer(_window, this);
-
-	center_window(_window, w, h, glfwGetPrimaryMonitor());
-
+	glfwSetWindowUserPointer(_window, event_cb_userdata);
 	glfwSetMouseButtonCallback(_window, mouse_button_cb);
 	glfwSetCursorPosCallback(_window, mouse_move_cb);
 	glfwSetScrollCallback(_window, mouse_scroll_cb);
+
+	center_window(_window, w, h, glfwGetPrimaryMonitor());
 
 	glfwMakeContextCurrent(_window);
 

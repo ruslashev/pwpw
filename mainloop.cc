@@ -17,37 +17,14 @@ static void add_entities(state *s)
 		}
 }
 
-static void mouse_button_static_cb(void *userdata, mouse_key k, action a)
-{
-	mainloop *m = (mainloop*)userdata;
-	m->mouse_button_cb(k, a);
-}
-
-static void mouse_move_static_cb(void *userdata, float x, float y)
-{
-	mainloop *m = (mainloop*)userdata;
-	m->mouse_move_cb(x, y);
-}
-
-static void mouse_scroll_static_cb(void *userdata, float x, float y)
-{
-	mainloop *m = (mainloop*)userdata;
-	m->mouse_scroll_cb(x, y);
-}
-
 void mainloop::init()
 {
 	const int winw = 1280, winh = (winw * 3) / 4;
 
-	w.init(winw, winh);
+	w.init(winw, winh, this);
 	r.init(winw, winh);
 
 	add_entities(&current_state);
-
-	w.event_cb_userdata = this;
-	w.mb_cb = mouse_button_static_cb;
-	w.mm_cb = mouse_move_static_cb;
-	w.ms_cb = mouse_scroll_static_cb;
 }
 
 void mainloop::poll_events()
@@ -81,6 +58,19 @@ void mainloop::show_fps(float elapsed, uint64_t frames, float current)
 			(double)(elapsed * 1000.f));
 
 	w.set_title(title);
+}
+
+void mainloop::mouse_button_cb(mouse_key k, action a)
+{
+}
+
+void mainloop::mouse_move_cb(float x, float y)
+{
+}
+
+void mainloop::mouse_scroll_cb(float x, float y)
+{
+	r.scroll(y);
 }
 
 void mainloop::run()
@@ -138,18 +128,5 @@ void mainloop::run()
 			std::this_thread::sleep_for(std::chrono::nanoseconds(to_sleep));
 		}
 	}
-}
-
-void mainloop::mouse_button_cb(mouse_key k, action a)
-{
-}
-
-void mainloop::mouse_move_cb(float x, float y)
-{
-}
-
-void mainloop::mouse_scroll_cb(float x, float y)
-{
-	r.scroll(y);
 }
 
