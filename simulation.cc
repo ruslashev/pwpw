@@ -7,6 +7,7 @@ static void interpolate_entities(const entity &s1, const entity &s2, float t, en
 	out->x     = glm::lerp(s1.x,     s2.x,     t);
 	out->y     = glm::lerp(s1.y,     s2.y,     t);
 	out->angle = glm::lerp(s1.angle, s2.angle, t);
+	out->team  = s2.team;
 }
 
 static void interpolate_states(const state &s1, const state &s2, float t, state *out)
@@ -29,12 +30,15 @@ void state::update(float t, float dt)
 
 static void add_entities(state *s)
 {
+	srand(1);
+
 	for (int y = 0; y < 10; ++y)
 		for (int x = 0; x < 10; ++x) {
 			entity sh = {
 				x * 100.f,
 				y * 100.f,
-				(float)(rand() % 360)
+				(float)(rand() % 360),
+				(uint8_t)(rand() % 4),
 			};
 			s->entities.push_back(sh);
 		}

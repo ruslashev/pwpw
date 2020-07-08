@@ -7,10 +7,11 @@ using glm::vec2;
 
 struct entity
 {
-	/* first 3 elements must be these for rendering purposes */
+	/* first 4 elements must be these for rendering purposes */
 	float x;
 	float y;
 	float angle;
+	uint8_t team;
 };
 
 struct state

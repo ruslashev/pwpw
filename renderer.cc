@@ -47,9 +47,13 @@ void renderer::init(int _w, int _h)
 
 		in vec2 position;
 		in vec3 inst_data;
+		in uint inst_team;
+
+		out vec3 color;
 
 		uniform mat4 proj;
 		uniform mat4 view;
+		uniform vec3 teams[4];
 
 		mat4 translate(vec2 pos)
 		{
@@ -69,6 +73,7 @@ void renderer::init(int _w, int _h)
 
 		void main()
 		{
+			color = teams[inst_team];
 			gl_Position = proj *
 				view *
 				translate(inst_data.xy) *
@@ -80,11 +85,13 @@ void renderer::init(int _w, int _h)
 	strlit fsh = R"(
 		#version 150 core
 
+		in vec3 color;
+
 		out vec4 out_color;
 
 		void main()
 		{
-			out_color = vec4(1.0, 1.0, 1.0, 1.0);
+			out_color = vec4(color, 1.0);
 		}
 	)";
 
@@ -96,6 +103,9 @@ void renderer::init(int _w, int _h)
 	instances.bind();
 	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
+	int inst_team_attrib_id = shp.int_vertex_attrib("inst_team", 1, GL_UNSIGNED_BYTE,
+			sizeof(entity), (void*)(3 * sizeof(float)));
+	glVertexAttribDivisor(inst_team_attrib_id, 1);
 
 	glm::mat4 proj = glm::ortho(0.f, (float)w, 0.f, (float)h, 0.f, 1.f);
 	uni_proj_id = shp.create_uniform("proj");
@@ -103,6 +113,17 @@ void renderer::init(int _w, int _h)
 
 	uni_view_id = shp.create_uniform("view");
 	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
+
+	const int ncolors = 4;
+	float colors[3 * ncolors] = {  /* h,     s,    v   */
+		0.9f,  0.18f,  0.18f,  /* 0,     0.8,  0.9 */
+		0.18f, 0.36f,  0.9f,   /* 0.625, 0.8,  0.9 */
+		0.54f, 0.9f,   0.18f,  /* 0.25,  0.8,  0.9 */
+		0.9f , 0.225f, 0.731f, /* 0.875, 0.75, 0.9 */
+	};
+
+	int uni_teams_id = shp.create_uniform("teams");
+	glUniform3fv(uni_teams_id, ncolors, colors);
 }
 
 void renderer::render(const state *s)
