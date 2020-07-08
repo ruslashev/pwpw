@@ -2,6 +2,8 @@
 #include <GL/glew.h>
 
 #include "renderer.hh"
+#include "models.hh"
+#include "macros.hh"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -22,23 +24,11 @@ void renderer::init(int _w, int _h)
 
 	va.create();
 
-	float vertices_data[] = {
-		 22.f,   0.f,
-		 -8.f,   0.f,
-		-14.f,  18.f,
-		-14.f, -18.f,
-	};
-
 	vertices.create(GL_ARRAY_BUFFER);
-	vertices.push_data(sizeof(vertices_data), vertices_data);
-
-	GLuint elements_data[] = {
-		0, 2, 1,
-		0, 1, 3,
-	};
+	vertices.push_data(sizeof(model_vertices), model_vertices);
 
 	elements.create(GL_ELEMENT_ARRAY_BUFFER);
-	elements.push_data(sizeof(elements_data), elements_data);
+	elements.push_data(sizeof(model_elements), model_elements);
 
 	instances.create(GL_ARRAY_BUFFER);
 
@@ -53,7 +43,7 @@ void renderer::init(int _w, int _h)
 
 		uniform mat4 proj;
 		uniform mat4 view;
-		uniform vec3 teams[4];
+		uniform vec3 teams[)" strfy(MAX_TEAMS) R"(4];
 
 		mat4 translate(vec2 pos)
 		{
@@ -114,16 +104,8 @@ void renderer::init(int _w, int _h)
 	uni_view_id = shp.create_uniform("view");
 	glUniformMatrix4fv(uni_view_id, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.f)));
 
-	const int ncolors = 4;
-	float colors[3 * ncolors] = {  /* h,     s,    v   */
-		0.9f,  0.18f,  0.18f,  /* 0,     0.8,  0.9 */
-		0.18f, 0.36f,  0.9f,   /* 0.625, 0.8,  0.9 */
-		0.54f, 0.9f,   0.18f,  /* 0.25,  0.8,  0.9 */
-		0.9f , 0.225f, 0.731f, /* 0.875, 0.75, 0.9 */
-	};
-
 	int uni_teams_id = shp.create_uniform("teams");
-	glUniform3fv(uni_teams_id, ncolors, colors);
+	glUniform3fv(uni_teams_id, MAX_TEAMS, team_colors);
 }
 
 void renderer::render(const state *s)
