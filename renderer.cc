@@ -61,10 +61,10 @@ void renderer::init(int _w, int _h)
 
 		mat4 rotate(float ang)
 		{
-			return mat4(cos(ang), -sin(ang), 0, 0,
-			            sin(ang),  cos(ang), 0, 0,
-			            0,         0,        1, 0,
-			            0,         0,        0, 1);
+			return mat4( cos(ang), sin(ang), 0, 0,
+			            -sin(ang), cos(ang), 0, 0,
+			             0,        0,        1, 0,
+			             0,        0,        0, 1);
 		}
 
 		void main()
