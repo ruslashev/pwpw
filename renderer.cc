@@ -89,10 +89,10 @@ void renderer::init(int _w, int _h)
 	shp.create(vsh, fsh);
 
 	vertices.bind();
-	shp.vertex_attrib("position", 2, 0, 0);
+	shp.vertex_attrib("position", 2, GL_FLOAT, 0, 0);
 
 	instances.bind();
-	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
+	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, GL_FLOAT, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
 
 	glm::mat4 proj = glm::ortho(0.f, (float)w, 0.f, (float)h, 0.f, 1.f);
