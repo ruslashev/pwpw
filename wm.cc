@@ -41,6 +41,7 @@ void wm::init(int w, int h, void *event_cb_userdata)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 

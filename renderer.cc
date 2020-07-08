@@ -15,6 +15,8 @@ void renderer::init(int _w, int _h)
 	glewExperimental = GL_TRUE;
 	glewInit();
 
+	glEnable(GL_MULTISAMPLE);
+
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_message_cb, nullptr);
 
