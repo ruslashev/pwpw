@@ -11,6 +11,8 @@ class camera
 	float offset_y;
 	float scale;
 
+	bool needs_commit;
+
 	renderer *r;
 
 	void calculate_viewmat();
@@ -18,6 +20,7 @@ public:
 	void init(renderer *_r);
 	void change_scale(float diff);
 	void change_offset(float pan_x, float pan_y);
+	void commit_matrix();
 };
 
 

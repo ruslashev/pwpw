@@ -118,6 +118,8 @@ void mainloop::run()
 			accumulator -= dt;
 		}
 
+		cam.commit_matrix();
+
 		draw(accumulator / dt);
 
 		done |= w.should_close();

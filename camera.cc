@@ -21,19 +21,29 @@ void camera::init(renderer *_r)
 	offset_x = 0.f;
 	offset_y = 0.f;
 	scale = 1.f;
+	needs_commit = true;
 	r = _r;
 }
 
 void camera::change_scale(float diff)
 {
 	scale += scale * diff;
-	calculate_viewmat();
+	needs_commit = true;
 }
 
 void camera::change_offset(float pan_x, float pan_y)
 {
 	offset_x += pan_x;
 	offset_y += pan_y;
+	needs_commit = true;
+}
+
+void camera::commit_matrix()
+{
+	if (!needs_commit)
+		return;
+
 	calculate_viewmat();
+	needs_commit = false;
 }
 
