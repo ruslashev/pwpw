@@ -4,19 +4,6 @@
 #include <chrono>
 #include <thread>
 
-static void add_entities(state *s)
-{
-	for (int y = 0; y < 10; ++y)
-		for (int x = 0; x < 10; ++x) {
-			entity sh = {
-				x * 100.f,
-				y * 100.f,
-				(float)(rand() % 360)
-			};
-			s->entities.push_back(sh);
-		}
-}
-
 void mainloop::init()
 {
 	const int winw = 1280, winh = (winw * 3) / 4;
@@ -24,8 +11,7 @@ void mainloop::init()
 	w.init(winw, winh, this);
 	r.init(winw, winh);
 	cam.init(&r);
-
-	add_entities(&current_state);
+	s.init();
 }
 
 void mainloop::poll_events()
@@ -49,14 +35,14 @@ void mainloop::poll_events()
 
 void mainloop::update(float t, float dt)
 {
-	current_state.update(t, dt);
+	s.update(t, dt);
 }
 
 void mainloop::draw(float alpha)
 {
 	state draw_state;
-	interpolate_states(prev_state, current_state, alpha, &draw_state);
 
+	s.get_draw_state(alpha, &draw_state);
 	r.render(&draw_state);
 }
 
@@ -127,7 +113,6 @@ void mainloop::run()
 		while (accumulator >= dt) {
 			poll_events();
 
-			prev_state = current_state;
 			update(t, dt);
 			t += dt;
 			accumulator -= dt;

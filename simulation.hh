@@ -20,5 +20,13 @@ struct state
 	void update(float t, float dt);
 };
 
-void interpolate_states(const state &s1, const state &s2, float t, state *out);
+class simulation
+{
+	state previous;
+	state current;
+public:
+	void init();
+	void update(float t, float dt);
+	void get_draw_state(float alpha, state *s);
+};
 

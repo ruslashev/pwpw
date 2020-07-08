@@ -9,7 +9,7 @@ static void interpolate_entities(const entity &s1, const entity &s2, float t, en
 	out->angle = glm::lerp(s1.angle, s2.angle, t);
 }
 
-void interpolate_states(const state &s1, const state &s2, float t, state *out)
+static void interpolate_states(const state &s1, const state &s2, float t, state *out)
 {
 	/* not accounting for removed entities */
 
@@ -25,5 +25,34 @@ void state::update(float t, float dt)
 {
 	for (size_t i = 0; i < entities.size(); ++i)
 		entities[i].angle += 5.f * dt;
+}
+
+static void add_entities(state *s)
+{
+	for (int y = 0; y < 10; ++y)
+		for (int x = 0; x < 10; ++x) {
+			entity sh = {
+				x * 100.f,
+				y * 100.f,
+				(float)(rand() % 360)
+			};
+			s->entities.push_back(sh);
+		}
+}
+
+void simulation::init()
+{
+	add_entities(&current);
+}
+
+void simulation::update(float t, float dt)
+{
+	previous = current;
+	current.update(t, dt);
+}
+
+void simulation::get_draw_state(float alpha, state *s)
+{
+	interpolate_states(previous, current, alpha, s);
 }
 

@@ -10,9 +10,7 @@ class mainloop
 	wm w;
 	renderer r;
 	camera cam;
-
-	state prev_state;
-	state current_state;
+	simulation s;
 
 	bool done;
 
