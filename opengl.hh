@@ -44,7 +44,8 @@ class shprog
 public:
 	void create(strlit vsh, strlit fsh);
 	void bind();
-	int vertex_attrib(strlit name, int dim, GLenum type, size_t stride, void *offset);
+	int vertex_attrib(strlit name, int dim, size_t stride, void *offset);
+	int int_vertex_attrib(strlit name, int dim, GLenum type, size_t stride, void *offset);
 	int create_uniform(strlit name);
 	~shprog();
 };

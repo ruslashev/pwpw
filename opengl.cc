@@ -132,12 +132,22 @@ void shprog::bind()
 	glUseProgram(id);
 }
 
-int shprog::vertex_attrib(strlit name, int dim, GLenum type, size_t stride, void *offset)
+int shprog::vertex_attrib(strlit name, int dim, size_t stride, void *offset)
 {
 	GLint attrib_id = glGetAttribLocation(id, name);
 
 	glEnableVertexAttribArray(attrib_id);
-	glVertexAttribPointer(attrib_id, dim, type, GL_FALSE, stride, offset);
+	glVertexAttribPointer(attrib_id, dim, GL_FLOAT, GL_FALSE, stride, offset);
+
+	return attrib_id;
+}
+
+int shprog::int_vertex_attrib(strlit name, int dim, GLenum type, size_t stride, void *offset)
+{
+	GLint attrib_id = glGetAttribLocation(id, name);
+
+	glEnableVertexAttribArray(attrib_id);
+	glVertexAttribIPointer(attrib_id, dim, type, stride, offset);
 
 	return attrib_id;
 }
