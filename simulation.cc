@@ -26,11 +26,14 @@ void entity::update(float t, float dt)
 {
 	// angle += 5.f * dt;
 
+	float old_vel_x = vel_x;
+	float old_vel_y = vel_y;
+
 	vel_x = vel_x + acc_x * dt;
 	vel_y = vel_y + acc_y * dt;
 
-	x = x + vel_x * dt;
-	y = y + vel_y * dt;
+	x = x + (old_vel_x + vel_x) * 0.5f * dt;
+	y = y + (old_vel_y + vel_y) * 0.5f * dt;
 }
 
 void state::update(float t, float dt)
