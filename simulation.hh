@@ -12,6 +12,8 @@ struct entity
 	float y;
 	float angle;
 	uint8_t team;
+
+	void update(float t, float dt);
 };
 
 struct state
