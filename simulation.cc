@@ -24,7 +24,13 @@ static void interpolate_states(const state &s1, const state &s2, float t, state 
 
 void entity::update(float t, float dt)
 {
-	angle += 5.f * dt;
+	// angle += 5.f * dt;
+
+	vel_x = vel_x + acc_x * dt;
+	vel_y = vel_y + acc_y * dt;
+
+	x = x + vel_x * dt;
+	y = y + vel_y * dt;
 }
 
 void state::update(float t, float dt)
@@ -44,7 +50,11 @@ static void add_entities(state *s)
 				y * 100.f,
 				(float)(rand() % 360),
 				(uint8_t)(rand() % 4),
+				0, 0,
+				0, 0,
 			};
+			sh.acc_x = 5.f * cosf(sh.angle);
+			sh.acc_y = 5.f * sinf(sh.angle);
 			s->entities.push_back(sh);
 		}
 }

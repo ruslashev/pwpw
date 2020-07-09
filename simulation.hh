@@ -13,6 +13,12 @@ struct entity
 	float angle;
 	uint8_t team;
 
+	float vel_x;
+	float vel_y;
+
+	float acc_x;
+	float acc_y;
+
 	void update(float t, float dt);
 };
 
