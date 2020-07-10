@@ -22,9 +22,11 @@ struct entity
 	void update(float t, float dt);
 };
 
+typedef std::vector<entity> entlist;
+
 struct state
 {
-	std::vector<entity> entities;
+	entlist entities;
 
 	void update(float t, float dt);
 };

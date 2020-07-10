@@ -2,30 +2,28 @@
 
 #include <glm/gtx/compatibility.hpp>
 
-static void interpolate_entities(const entity &s1, const entity &s2, float t, entity *out)
+static void interpolate_entities(const entity &e1, const entity &e2, float t, entity *out)
 {
-	out->x     = glm::lerp(s1.x,     s2.x,     t);
-	out->y     = glm::lerp(s1.y,     s2.y,     t);
-	out->angle = glm::lerp(s1.angle, s2.angle, t);
-	out->team  = s2.team;
+	out->x     = glm::lerp(e1.x,     e2.x,     t);
+	out->y     = glm::lerp(e1.y,     e2.y,     t);
+	out->angle = glm::lerp(e1.angle, e2.angle, t);
+	out->team  = e2.team;
 }
 
-static void interpolate_states(const state &s1, const state &s2, float t, state *out)
+static void interpolate_entity_lists(const entlist &s1, const entlist &s2, float t, entlist *out)
 {
 	/* not accounting for removed entities */
 
-	size_t n = s1.entities.size();
+	size_t n = s1.size();
 
-	out->entities.resize(n);
+	out->resize(n);
 
 	for (size_t i = 0; i < n; ++i)
-		interpolate_entities(s1.entities[i], s2.entities[i], t, &out->entities[i]);
+		interpolate_entities(s1[i], s2[i], t, &(*out)[i]);
 }
 
 void entity::update(float t, float dt)
 {
-	// angle += 5.f * dt;
-
 	float old_vel_x = vel_x;
 	float old_vel_y = vel_y;
 
@@ -46,18 +44,16 @@ static void add_entities(state *s)
 {
 	srand(1);
 
-	for (int y = 0; y < 10; ++y)
-		for (int x = 0; x < 10; ++x) {
+	for (int y = 0; y < 5; ++y)
+		for (int x = 0; x < 5; ++x) {
 			entity sh = {
-				x * 100.f,
-				y * 100.f,
+				x * 200.f,
+				y * 200.f,
 				(float)(rand() % 360),
 				(uint8_t)(rand() % 4),
 				0, 0,
 				0, 0,
 			};
-			sh.acc_x = 5.f * cosf(sh.angle);
-			sh.acc_y = 5.f * sinf(sh.angle);
 			s->entities.push_back(sh);
 		}
 }
@@ -75,6 +71,6 @@ void simulation::update(float t, float dt)
 
 void simulation::get_draw_state(float alpha, state *s)
 {
-	interpolate_states(previous, current, alpha, s);
+	interpolate_entity_lists(previous.entities, current.entities, alpha, &s->entities);
 }
 
