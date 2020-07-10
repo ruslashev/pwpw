@@ -1,15 +1,41 @@
 #pragma once
 
-static const float model_vertices[] = {
+static const float ship_vertices[] = {
 	 22.f,   0.f,
 	 -8.f,   0.f,
 	-14.f,  18.f,
 	-14.f, -18.f,
 };
 
-static const unsigned int model_elements[] = {
+#define ship_numelements 6
+
+static const unsigned int ship_elements[] = {
 	0, 2, 1,
 	0, 1, 3,
+};
+
+#define bthick  4.5f
+#define blong   17.f
+#define bschnoz 1.6f
+#define bthickh bthick / 2.f
+#define blongh  blong / 2.f
+
+static const float bullet_vertices[] = {
+	 blongh,            bthickh,
+	 blongh + bschnoz,      0.f,
+	 blongh,           -bthickh,
+	-blongh,            bthickh,
+	-blongh - bschnoz,      0.f,
+	-blongh,           -bthickh,
+};
+
+#define bullet_numelements 12
+
+static const unsigned int bullet_elements[] = {
+	0, 2, 1,
+	0, 3, 2,
+	3, 5, 2,
+	3, 5, 4,
 };
 
 struct rgb

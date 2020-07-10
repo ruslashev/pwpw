@@ -25,10 +25,10 @@ void renderer::init(int _w, int _h)
 	va.create();
 
 	vertices.create(GL_ARRAY_BUFFER);
-	vertices.push_data(sizeof(model_vertices), model_vertices);
+	vertices.push_data(sizeof(ship_vertices), ship_vertices);
 
 	elements.create(GL_ELEMENT_ARRAY_BUFFER);
-	elements.push_data(sizeof(model_elements), model_elements);
+	elements.push_data(sizeof(ship_elements), ship_elements);
 
 	instances.create(GL_ARRAY_BUFFER);
 
@@ -116,7 +116,7 @@ void renderer::render(const state *s)
 	instances.bind();
 	instances.stream_data(s->entities.size() * sizeof(s->entities[0]), s->entities.data());
 
-	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, s->entities.size());
+	glDrawElementsInstanced(GL_TRIANGLES, ship_numelements, GL_UNSIGNED_INT, 0, s->entities.size());
 }
 
 void renderer::update_camera_mat(const float *view)
