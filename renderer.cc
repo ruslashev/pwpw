@@ -24,13 +24,13 @@ void renderer::init(int _w, int _h)
 
 	va.create();
 
-	vertices.create(GL_ARRAY_BUFFER);
-	vertices.push_data(sizeof(ship_vertices), ship_vertices);
+	ship_vertices.create(GL_ARRAY_BUFFER);
+	ship_vertices.push_data(sizeof(ship_vertices_data), ship_vertices_data);
 
-	elements.create(GL_ELEMENT_ARRAY_BUFFER);
-	elements.push_data(sizeof(ship_elements), ship_elements);
+	ship_elements.create(GL_ELEMENT_ARRAY_BUFFER);
+	ship_elements.push_data(sizeof(ship_elements_data), ship_elements_data);
 
-	instances.create(GL_ARRAY_BUFFER);
+	ship_instances.create(GL_ARRAY_BUFFER);
 
 	strlit vsh = R"(
 		#version 150 core
@@ -87,10 +87,10 @@ void renderer::init(int _w, int _h)
 
 	shp.create(vsh, fsh);
 
-	vertices.bind();
+	ship_vertices.bind();
 	shp.vertex_attrib("position", 2, 0, 0);
 
-	instances.bind();
+	ship_instances.bind();
 	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
 	int inst_team_attrib_id = shp.int_vertex_attrib("inst_team", 1, GL_UNSIGNED_BYTE,
@@ -113,8 +113,8 @@ void renderer::render(const state *s)
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	instances.bind();
-	instances.stream_data(s->entities.size() * sizeof(s->entities[0]), s->entities.data());
+	ship_instances.bind();
+	ship_instances.stream_data(s->entities.size() * sizeof(s->entities[0]), s->entities.data());
 
 	glDrawElementsInstanced(GL_TRIANGLES, ship_numelements, GL_UNSIGNED_INT, 0, s->entities.size());
 }

@@ -6,9 +6,11 @@
 class renderer
 {
 	vao va;
-	buffer vertices;
-	buffer elements;
-	buffer instances;
+
+	buffer ship_vertices;
+	buffer ship_elements;
+	buffer ship_instances;
+
 	shprog shp;
 
 	int uni_proj_id;
