@@ -1,5 +1,5 @@
 #include "simulation.hh"
-#include "util.hh"
+#include "macros.hh"
 
 #include <glm/gtx/compatibility.hpp>
 

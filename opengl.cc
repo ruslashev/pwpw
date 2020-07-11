@@ -1,5 +1,5 @@
 #include "opengl.hh"
-#include "util.hh"
+#include "macros.hh"
 #include <iostream>
 
 void vao::create()

@@ -1,5 +1,5 @@
 #include "wm.hh"
-#include "util.hh"
+#include "macros.hh"
 #include "mainloop.hh"
 
 static void center_window(GLFWwindow *window, int w, int h, GLFWmonitor *monitor)
