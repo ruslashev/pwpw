@@ -1,4 +1,5 @@
 #include "simulation.hh"
+#include "util.hh"
 
 #include <glm/gtx/compatibility.hpp>
 
@@ -22,16 +23,34 @@ static void interpolate_entity_lists(const entlist &s1, const entlist &s2, float
 		interpolate_entities(s1[i], s2[i], t, &(*out)[i]);
 }
 
+void entity::fire()
+{
+	float bullet_angle = angle;
+	float bullet_vel_x = 50.f * cosf(bullet_angle);
+	float bullet_vel_y = 50.f * sinf(bullet_angle);
+	entity bullet = {
+		x,
+		y,
+		angle,
+		team,
+		bullet_vel_x, bullet_vel_y,
+		0, 0,
+		0,
+	};
+
+	parent->bullets.push_back(bullet);
+}
+
 void entity::update(float t, float dt)
 {
 	float old_vel_x = vel_x;
 	float old_vel_y = vel_y;
 
-	vel_x = vel_x + acc_x * dt;
-	vel_y = vel_y + acc_y * dt;
+	vel_x += acc_x * dt;
+	vel_y += acc_y * dt;
 
-	x = x + (old_vel_x + vel_x) * 0.5f * dt;
-	y = y + (old_vel_y + vel_y) * 0.5f * dt;
+	x += (old_vel_x + vel_x) * 0.5f * dt;
+	y += (old_vel_y + vel_y) * 0.5f * dt;
 }
 
 void state::update(float t, float dt)
@@ -56,18 +75,18 @@ static void add_entities(state *s)
 				(uint8_t)(rand() % 4),
 				0, 0,
 				0, 0,
+				s,
 			};
 			s->entities.push_back(sh);
-
-			sh.acc_x = 5.f * cosf(sh.angle);
-			sh.acc_y = 5.f * sinf(sh.angle);
-			s->bullets.push_back(sh);
 		}
 }
 
 void simulation::init()
 {
 	add_entities(&current);
+
+	for (size_t i = 0; i < current.entities.size(); ++i)
+		current.entities[i].fire();
 }
 
 void simulation::update(float t, float dt)

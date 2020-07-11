@@ -5,6 +5,8 @@
 
 using glm::vec2;
 
+struct state;
+
 struct entity
 {
 	/* first 4 elements must be these for rendering purposes */
@@ -19,6 +21,9 @@ struct entity
 	float acc_x;
 	float acc_y;
 
+	state *parent;
+
+	void fire();
 	void update(float t, float dt);
 };
 
