@@ -1,4 +1,5 @@
 #include "mainloop.hh"
+#include "config.hh"
 #include <cstdlib>
 #include <cstdio>
 #include <chrono>
@@ -6,7 +7,7 @@
 
 void mainloop::init()
 {
-	const int winw = 1280, winh = (winw * 3) / 4;
+	const int winw = initial_winw, winh = initial_winh;
 
 	w.init(winw, winh, this);
 	r.init(winw, winh);
