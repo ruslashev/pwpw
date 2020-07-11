@@ -1,5 +1,4 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include <epoxy/gl.h>
 
 #include "renderer.hh"
 #include "models.hh"
@@ -13,9 +12,6 @@ void renderer::init(int _w, int _h)
 {
 	w = _w;
 	h = _h;
-
-	glewExperimental = GL_TRUE;
-	glewInit();
 
 	glEnable(GL_MULTISAMPLE);
 
