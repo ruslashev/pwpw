@@ -22,15 +22,19 @@ void renderer::init(int _w, int _h)
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_message_cb, nullptr);
 
-	va.create();
-
+	ship_va.create();
 	ship_vertices.create(GL_ARRAY_BUFFER);
 	ship_vertices.push_data(sizeof(ship_vertices_data), ship_vertices_data);
-
 	ship_elements.create(GL_ELEMENT_ARRAY_BUFFER);
 	ship_elements.push_data(sizeof(ship_elements_data), ship_elements_data);
-
 	ship_instances.create(GL_ARRAY_BUFFER);
+
+	bullet_va.create();
+	bullet_vertices.create(GL_ARRAY_BUFFER);
+	bullet_vertices.push_data(sizeof(bullet_vertices_data), bullet_vertices_data);
+	bullet_elements.create(GL_ELEMENT_ARRAY_BUFFER);
+	bullet_elements.push_data(sizeof(bullet_elements_data), bullet_elements_data);
+	bullet_instances.create(GL_ARRAY_BUFFER);
 
 	strlit vsh = R"(
 		#version 150 core
@@ -87,13 +91,23 @@ void renderer::init(int _w, int _h)
 
 	shp.create(vsh, fsh);
 
+	ship_va.bind();
 	ship_vertices.bind();
 	shp.vertex_attrib("position", 2, 0, 0);
-
 	ship_instances.bind();
 	int inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
 	glVertexAttribDivisor(inst_data_attrib_id, 1);
 	int inst_team_attrib_id = shp.int_vertex_attrib("inst_team", 1, GL_UNSIGNED_BYTE,
+			sizeof(entity), (void*)(3 * sizeof(float)));
+	glVertexAttribDivisor(inst_team_attrib_id, 1);
+
+	bullet_va.bind();
+	bullet_vertices.bind();
+	shp.vertex_attrib("position", 2, 0, 0);
+	bullet_instances.bind();
+	inst_data_attrib_id = shp.vertex_attrib("inst_data", 3, sizeof(entity), 0);
+	glVertexAttribDivisor(inst_data_attrib_id, 1);
+	inst_team_attrib_id = shp.int_vertex_attrib("inst_team", 1, GL_UNSIGNED_BYTE,
 			sizeof(entity), (void*)(3 * sizeof(float)));
 	glVertexAttribDivisor(inst_team_attrib_id, 1);
 
@@ -113,10 +127,17 @@ void renderer::render(const state *s)
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	ship_va.bind();
 	ship_instances.bind();
 	ship_instances.stream_data(s->entities.size() * sizeof(s->entities[0]), s->entities.data());
 
 	glDrawElementsInstanced(GL_TRIANGLES, ship_numelements, GL_UNSIGNED_INT, 0, s->entities.size());
+
+	bullet_va.bind();
+	bullet_instances.bind();
+	bullet_instances.stream_data(s->bullets.size() * sizeof(s->bullets[0]), s->bullets.data());
+
+	glDrawElementsInstanced(GL_TRIANGLES, bullet_numelements, GL_UNSIGNED_INT, 0, s->bullets.size());
 }
 
 void renderer::update_camera_mat(const float *view)

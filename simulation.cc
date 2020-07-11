@@ -38,6 +38,9 @@ void state::update(float t, float dt)
 {
 	for (size_t i = 0; i < entities.size(); ++i)
 		entities[i].update(t, dt);
+
+	for (size_t i = 0; i < bullets.size(); ++i)
+		bullets[i].update(t, dt);
 }
 
 static void add_entities(state *s)
@@ -55,6 +58,10 @@ static void add_entities(state *s)
 				0, 0,
 			};
 			s->entities.push_back(sh);
+
+			sh.acc_x = 5.f * cosf(sh.angle);
+			sh.acc_y = 5.f * sinf(sh.angle);
+			s->bullets.push_back(sh);
 		}
 }
 
@@ -72,5 +79,6 @@ void simulation::update(float t, float dt)
 void simulation::get_draw_state(float alpha, state *s)
 {
 	interpolate_entity_lists(previous.entities, current.entities, alpha, &s->entities);
+	interpolate_entity_lists(previous.bullets, current.bullets, alpha, &s->bullets);
 }
 

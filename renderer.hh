@@ -5,11 +5,15 @@
 
 class renderer
 {
-	vao va;
-
+	vao ship_va;
 	buffer ship_vertices;
 	buffer ship_elements;
 	buffer ship_instances;
+
+	vao bullet_va;
+	buffer bullet_vertices;
+	buffer bullet_elements;
+	buffer bullet_instances;
 
 	shprog shp;
 

@@ -27,6 +27,7 @@ typedef std::vector<entity> entlist;
 struct state
 {
 	entlist entities;
+	entlist bullets;
 
 	void update(float t, float dt);
 };
