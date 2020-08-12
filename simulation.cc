@@ -1,6 +1,6 @@
 #include "simulation.hh"
 #include "macros.hh"
-
+#include "config.hh"
 #include <glm/gtx/compatibility.hpp>
 
 static void interpolate_entities(const entity &e1, const entity &e2, float t, entity *out)
@@ -66,19 +66,35 @@ static void add_entities(state *s)
 {
 	srand(1);
 
-	for (int y = 0; y < 5; ++y)
-		for (int x = 0; x < 5; ++x) {
-			entity sh = {
-				x * 200.f,
-				y * 200.f,
-				(float)(rand() % 360),
-				(uint8_t)(rand() % 4),
-				0, 0,
-				0, 0,
-				s,
-			};
-			s->entities.push_back(sh);
-		}
+	int spawn_width = 200;
+	int ships_in_team = 20;
+
+	for (int i = 0; i < ships_in_team; ++i) {
+		entity sh = {
+			(float)(rand() % spawn_width),
+			(float)(rand() % initial_winh),
+			(float)(rand() % 360),
+			0,
+			0, 0,
+			0, 0,
+			s,
+		};
+		s->entities.push_back(sh);
+	}
+
+	for (int i = 0; i < ships_in_team; ++i) {
+		entity sh = {
+			(float)(initial_winw - spawn_width + (rand() % spawn_width)),
+			(float)(rand() % initial_winh),
+			(float)(rand() % 360),
+			1,
+			0, 0,
+			0, 0,
+			s,
+		};
+		s->entities.push_back(sh);
+	}
+
 }
 
 void simulation::init()
